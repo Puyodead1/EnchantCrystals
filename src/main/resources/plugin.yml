@@ -1,0 +1,9 @@
+name: CosmicCrystals
+version: ${project.version}
+main: me.puyodead.cosmiccrystals.CosmicCrystals
+authors: [Puyodead1]
+commands:
+  givecrystal:
+    description: Give a crystal
+    aliases: [gc]
+    usage: /gc <enchant name> [amount] [level] [player]

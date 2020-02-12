@@ -1,0 +1,16 @@
+# Made by Puyodead1
+settings:
+  item material: NETHER_STAR
+  crystal display name: "&6Enchantment Crystal"
+  crystal lore:
+  - "&7Crystal Type: %CRYSTAL_TYPE%"
+  - "&7Crystal Level: %CRYSTAL_LEVEL%"
+  - "&7Right click to apply"
+
+messages:
+  item contains enchant: "&cThat item already contains this enchant!"
+  success applied: "&aSuccessfully applied %CRYSTAL_TYPE% %CRYSTAL_LEVEL% to %ITEM_TYPE%"
+  cant enchant item: "&cThat enchant cannot be added to this item!"
+  invalid player specified: "&cInvalid player specified!"
+  invalid crystal name: "&cInvalid Crystal Name!"
+  no permission: "&cYou do not have permission to run that command!"
