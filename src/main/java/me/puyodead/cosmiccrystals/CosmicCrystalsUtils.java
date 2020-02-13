@@ -2,6 +2,8 @@ package me.puyodead.cosmiccrystals;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
@@ -21,6 +23,10 @@ public class CosmicCrystalsUtils {
 
     public static void sendPlayer(Player player, String msg) {
         player.sendMessage(Color(msg));
+    }
+
+    public static void sendSender(CommandSender commandSender, String msg) {
+        commandSender.sendMessage(Color(msg));
     }
 
     public static List<String> ColorList(List<String> list) {
