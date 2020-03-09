@@ -1,0 +1,45 @@
+@EventHandler
+    public void CrystalUse(InventoryClickEvent e) {
+        final Player player = e.getWhoClicked() instanceof Player ? (Player)e.getWhoClicked() : null;
+        if (player != null && e.getClickedInventory() != null && (e.getView().getTitle().equals("container.inventory") || e.getView().getTitle().equals("Crafting")) && e.getCursor() != null && e.getCurrentItem() != null) {
+            if (e.getCursor().getType().equals(Material.NETHER_STAR) && !e.getCurrentItem().getType().equals(Material.AIR) && Objects.requireNonNull(e.getCursor().getItemMeta()).hasDisplayName() && !e.getCurrentItem().getType().equals(Material.NETHER_STAR)) {
+                if (e.getCursor().getItemMeta().getDisplayName().equals(EnchantCrystalsUtils.Color(EnchantCrystals.plugin.getConfig().getString("settings.crystal display name")))) {
+                    e.setCancelled(true);
+                    final ItemStack itemToApplyTo = e.getCurrentItem();
+                    final ItemStack crystal = e.getCursor();
+
+                    final String crystalEnchantName = Objects.requireNonNull(crystal.getItemMeta().getLore()).get(0).split(": ")[1];
+
+                    final CrystalType crystalType = CrystalType.valueOf(crystalEnchantName);
+
+                    final int crystalLevel = Integer.parseInt(crystal.getItemMeta().getLore().get(1).split(": ")[1]);
+                    if (crystalType != null) {
+                        //
+                        if (crystalType.getCrystalEnchantment().canEnchantItem(itemToApplyTo)) {
+                            if (!itemToApplyTo.getEnchantments().containsKey(crystalType.getCrystalEnchantment())) {
+                                try{
+                                    itemToApplyTo.addEnchantment(crystalType.getCrystalEnchantment(), crystalLevel);
+                                    EnchantCrystalsUtils.sendPlayer(player, Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.success applied")).replace("%CRYSTAL_TYPE%", crystalType.getCrystalEnchantment().getName()).replace("%CRYSTAL_LEVEL%", crystalLevel + "").replace("%ITEM_TYPE%", itemToApplyTo.getType().name()));
+                                } catch(IllegalArgumentException e1) {
+                                    if(e1.getMessage().contains("Enchantment level is either too low or too high")) {
+                                        EnchantCrystalsUtils.sendPlayer(player, "&cEnchantment level is either too low or too high!");
+                                    }
+                                }
+                            } else {
+                                // enchant exists on the item
+                                EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.item contains enchant"));
+                                //e.setCancelled(false);
+                            }
+                        } else {
+                            // cannot enchant item
+                            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.cant enchant item"));
+                            //e.setCancelled(false);
+                        }
+                    } else {
+                        EnchantCrystalsUtils.sendPlayer(player, "CrystalType is null :(");
+                        //e.setCancelled(false);
+                    }
+                }
+            }
+        }
+    }

@@ -1,6 +1,6 @@
-name: CosmicCrystals
+name: EnchantCrystals
 version: ${project.version}
-main: me.puyodead.cosmiccrystals.CosmicCrystals
+main: me.puyodead.enchantcrystals.EnchantCrystals
 authors: [Puyodead1]
 commands:
   givecrystal:

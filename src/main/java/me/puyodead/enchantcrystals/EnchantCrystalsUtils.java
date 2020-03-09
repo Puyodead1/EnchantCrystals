@@ -1,17 +1,15 @@
-package me.puyodead.cosmiccrystals;
+package me.puyodead.enchantcrystals;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class CosmicCrystalsUtils {
+public class EnchantCrystalsUtils {
 
     public static String Color(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);

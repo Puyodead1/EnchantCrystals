@@ -1,9 +1,6 @@
-package me.puyodead.cosmiccrystals;
+package me.puyodead.enchantcrystals;
 
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.List;
