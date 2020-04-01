@@ -24,7 +24,7 @@ public class GiveCrystalCommand implements CommandExecutor {
             final int l = args.length;
             if (l == 0) {
                 // TODO: GUI?
-                EnchantCrystalsUtils.sendSender(sender, "&6CosmicCrystals v" + EnchantCrystals.plugin.getDescription().getVersion() + " by Puyodead1");
+                EnchantCrystalsUtils.sendSender(sender, "&6EnchantCrystals v" + EnchantCrystals.plugin.getDescription().getVersion() + " by Puyodead1");
                 EnchantCrystalsUtils.sendSender(sender, "&6=============================");
                 EnchantCrystalsUtils.sendSender(sender, "&7/gc <enchant name>");
                 EnchantCrystalsUtils.sendSender(sender, "&7/gc <enchant name> <amount>");

@@ -16,3 +16,4 @@ messages:
   no permission: "&cYou do not have permission to run that command!"
   crystal given to you: "&aAdded x%CRYSTAL_AMOUNT% %CRYSTAL_TYPE% crystal to your inventory!"
   crystal given: "&aGave %PLAYER_NAME% x%CRYSTAL_AMOUNT% %CRYSTAL_TYPE% crystal!"
+  cant be used in creative: "&cYou cannot apply crystals in creative mode!"

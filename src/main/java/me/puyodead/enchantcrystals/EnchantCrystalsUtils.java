@@ -2,9 +2,11 @@ package me.puyodead.enchantcrystals;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +45,20 @@ public class EnchantCrystalsUtils {
         }
 
         return newList;
+    }
+
+    public static ItemStack addEnchantToItem(ItemStack is, Enchantment enchant, int level) {
+        final Material mat = is != null ? is.getType() : null;
+        if(mat != null && !mat.equals(Material.NETHER_STAR)) {
+            if(!is.containsEnchantment(enchant)) {
+                // add
+                is.addEnchantment(enchant, level);
+                return is;
+            } else {
+                // contains
+                return null;
+            }
+        }
+        return null;
     }
 }
