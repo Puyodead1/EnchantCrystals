@@ -1,47 +1,53 @@
 package me.puyodead.enchantcrystals;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CrystalType {
-    private String crystalName;
-    private Enchantment crystalEnchantment;
-    private int crystalMaxLevel;
-    private List<String> crystalLore;
+    private final NamespacedKey key;
+    private final Enchantment enchantment;
+    private final int maxLevel;
+    private final List<String> lore;
 
-    private static HashMap<String, CrystalType> crystals = new HashMap<>();
+    private static final HashMap<NamespacedKey, CrystalType> crystals = new HashMap<>();
 
-    public CrystalType(Enchantment crystalEnchantment, List<String> crystalLore) {
-        this.crystalName = crystalEnchantment.getName();
-        this.crystalEnchantment = crystalEnchantment;
-        this.crystalMaxLevel = crystalEnchantment.getMaxLevel();
-        this.crystalLore = crystalLore;
+    public CrystalType(Enchantment enchantment, List<String> lore) {
+        this.key = enchantment.getKey();
+        this.enchantment = enchantment;
+        this.maxLevel = enchantment.getMaxLevel();
+        this.lore = lore;
 
-        crystals.put(crystalEnchantment.getName(), this);
+        crystals.put(enchantment.getKey(), this);
     }
 
-    public String getCrystalName() {
-        return crystalName;
+    public NamespacedKey getKey() {
+        return key;
     }
 
-    public Enchantment getCrystalEnchantment() {
-        return crystalEnchantment;
+    public String getName() {
+        return enchantment.getName();
     }
 
-    public List<String> getCrystalLore() {
-        return crystalLore;
+    public Enchantment getEnchantment() {
+        return enchantment;
     }
 
-    public int getCrystalMaxLevel() {
-        return crystalMaxLevel;
+    public List<String> getLore() {
+        return lore;
     }
-    public static HashMap<String, CrystalType> getCrystals() {
+
+    public int getMaxLevel() {
+        return maxLevel;
+    }
+
+    public static HashMap<NamespacedKey, CrystalType> getCrystals() {
         return crystals;
     }
 
-    public static CrystalType valueOf(String string) {
-        return getCrystals().getOrDefault(string, null);
+    public static CrystalType valueOf(NamespacedKey key) {
+        return getCrystals().getOrDefault(key, null);
     }
 }

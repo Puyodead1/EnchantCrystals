@@ -1,7 +1,8 @@
 name: EnchantCrystals
 version: ${project.version}
 main: me.puyodead.enchantcrystals.EnchantCrystals
-authors: [Puyodead1]
+author: Puyodead1
+api-version: 1.13
 commands:
   givecrystal:
     description: Give a crystal
