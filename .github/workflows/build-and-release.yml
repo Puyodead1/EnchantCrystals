@@ -30,12 +30,12 @@ jobs:
         run: "mkdir ./artifacts"
 
       - name: Find and Move JARS
-        run: "mv `find ./target -name ChunkSpawnerLimiter-*.jar -print` ./artifacts"
+        run: "mv `find ./target -name EnchantCrystals-*.jar -print` ./artifacts"
 
       - name: Upload to release
         uses: Puyodead1/upload-to-release@master
         with:
-          args: './artifacts/ChunkSpawnerLimiter-*.jar'
+          args: './artifacts/EnchantCrystals-*.jar'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
