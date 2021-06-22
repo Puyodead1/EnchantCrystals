@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,9 +38,16 @@ public class GiveCrystalCommand implements CommandExecutor {
             EnchantCrystalsUtils.sendSenderList(sender, list);
             return true;
         } else if (l == 1) {
-            // player specified one argument, aka a crystal name
-            final String enchantmentName = args[0].toLowerCase();
-            return giveCrystal(player, enchantmentName);
+            // player specified one argument, aka a crystal name OR command 'enchants'
+            if (args[0].equals("enchants")) {
+                HashMap<NamespacedKey, CrystalType> crystals = CrystalType.getCrystals();
+                for (final CrystalType c : crystals.values()) {
+                    EnchantCrystalsUtils.sendPlayer(player, c.getKey().getKey());
+                }
+            } else {
+                final String enchantmentName = args[0].toLowerCase();
+                return giveCrystal(player, enchantmentName);
+            }
         } else if (l == 2) {
             //player specified crystal name and amount
             final String enchantmentName = args[0].toLowerCase();
@@ -86,7 +94,7 @@ public class GiveCrystalCommand implements CommandExecutor {
 
     private boolean ensureCrystalNotNull(Player player, Crystal crystal) {
         if (Objects.isNull(crystal)) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid crystal name"));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid enchantment"));
             return true;
         }
 
@@ -108,6 +116,11 @@ public class GiveCrystalCommand implements CommandExecutor {
     public boolean giveCrystal(Player player, String enchantmentName, int amount, int level) {
         final Crystal crystal = makeCrystal(enchantmentName, amount, level);
 
+        if (Objects.isNull(crystal)) {
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid enchantment"));
+            return true;
+        }
+
         if (level > crystal.getType().getMaxLevel()) {
             EnchantCrystalsUtils.sendPlayer(player, "&cEnchantment level out of bounds! Must be between 1 and " + crystal.getType().getMaxLevel());
             return true;
@@ -120,7 +133,7 @@ public class GiveCrystalCommand implements CommandExecutor {
         final Crystal crystal = makeCrystal(enchantmentName, amount, level);
 
         if (Objects.isNull(crystal)) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid crystal name"));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid enchantment"));
             return true;
         }
 

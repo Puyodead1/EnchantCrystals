@@ -1,6 +1,6 @@
 package me.puyodead.enchantcrystals;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -36,8 +36,8 @@ public class Crystal {
     private void setup() {
         ItemStack itemStack = new ItemStack(Material.valueOf(EnchantCrystals.plugin.getConfig().getString("settings.crystal.material")));
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(EnchantCrystalsUtils.Color(EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")), this.getType(), this.getAmount(), this.getLevel())));
-        itemMeta.setLore(EnchantCrystalsUtils.ColorList(this.type.getLore(), this.type.getEnchantment(), this.level));
+        itemMeta.setDisplayName(EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")), this.getType(), this.getAmount(), this.getLevel())));
+        itemMeta.setLore(EnchantCrystalsUtils.colorList(this.type.getLore(), this.type, this.level));
         itemStack.setItemMeta(itemMeta);
         itemStack.setAmount(this.amount);
 
@@ -45,6 +45,7 @@ public class Crystal {
         nbti.setString("enchantmentkey", this.type.getEnchantment().getKey().toString());
         nbti.setInteger("enchantmentlevel", this.level);
         nbti.setBoolean("puyodead1:enchantcrystals", true);
+        nbti.setBoolean("puyodead1:isCombinedCrystal", false);
 
         this.itemStack = nbti.getItem();
     }

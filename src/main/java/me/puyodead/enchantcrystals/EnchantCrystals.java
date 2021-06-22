@@ -2,6 +2,8 @@ package me.puyodead.enchantcrystals;
 
 import me.puyodead.enchantcrystals.Commands.GiveCrystalCommand;
 import me.puyodead.enchantcrystals.Events.CrystalUseEvent;
+import me.puyodead.enchantcrystals.Events.ItemEnchantEvent;
+import me.puyodead.enchantcrystals.Events.OpenInventoryEvent;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,6 +51,8 @@ public final class EnchantCrystals extends JavaPlugin {
         final long STARTED = System.currentTimeMillis();
 
         getServer().getPluginManager().registerEvents(new CrystalUseEvent(), this);
+        getServer().getPluginManager().registerEvents(new ItemEnchantEvent(), this);
+        getServer().getPluginManager().registerEvents(new OpenInventoryEvent(), this);
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Events &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
     }

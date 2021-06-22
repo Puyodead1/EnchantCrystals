@@ -2,14 +2,13 @@
 settings:
   crystal:
     material: NETHER_STAR
-    display name: "&6Enchantment Crystal &8[&7%CRYSTAL_TYPE%&8]"
+    display name: "&6Enchantment Crystal &8[&7%CRYSTAL_TYPE% %CRYSTAL_LEVEL%&8]"
     lore:
-      - "&7Level: %CRYSTAL_LEVEL%"
       - "&7Right click on an item to apply."
 
 messages:
   already enchanted: "&cThat item already contains this enchant!"
-  success: "&aSuccessfully applied &e%CRYSTAL_TYPE% %CRYSTAL_LEVEL% &ato &e%ITEM_TYPE%&a!"
+  success: "&aSuccessfully applied &e%CRYSTAL_TYPE% %CRYSTAL_LEVEL% &ato &e%ITEM_DISPLAY_NAME%&a!"
   invalid item: "&cThat enchant cannot be added to this item!"
   invalid player: "&cInvalid player specified!"
   invalid enchantment: "&cInvalid Enchantment! Check &e/gc enchants &cfor a list of valid enchantments."

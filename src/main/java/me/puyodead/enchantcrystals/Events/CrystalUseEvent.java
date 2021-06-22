@@ -1,6 +1,6 @@
 package me.puyodead.enchantcrystals.Events;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTItem;
 import me.puyodead.enchantcrystals.CrystalType;
 import me.puyodead.enchantcrystals.EnchantCrystals;
 import me.puyodead.enchantcrystals.EnchantCrystalsUtils;
@@ -9,11 +9,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class CrystalUseEvent implements Listener {
@@ -23,7 +23,6 @@ public class CrystalUseEvent implements Listener {
         e.setCancelled(true);
         final Player player = (Player) e.getWhoClicked();
         final Inventory inventory = e.getClickedInventory();
-        final ClickType clickType = e.getClick();
         final ItemStack currentItem = e.getCurrentItem();
         final ItemStack cursorItem = e.getCursor();
         // ensure that nothing is null, and that the items are not air, and that the cursorItem is only a nether star, also ignore stacking crystals
@@ -34,19 +33,7 @@ public class CrystalUseEvent implements Listener {
 
         NBTItem nbtCursorItem = new NBTItem(cursorItem);
 
-        // if this NBT doesnt exist, its not a crystal
-        if (!nbtCursorItem.hasKey("puyodead1:enchantcrystals")) {
-            e.setCancelled(false);
-            return;
-        }
-
-        // if these are missing, its an invalid crystal somehow
-        if (!nbtCursorItem.hasKey("enchantmentkey") || !nbtCursorItem.hasKey("enchantmentlevel")) {
-            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            Bukkit.broadcastMessage("Invalid crystal");
-            e.setCancelled(false);
-            return;
-        }
+        if (!EnchantCrystalsUtils.isCrystal(player, nbtCursorItem)) return;
 
         if (player.getGameMode().equals(GameMode.CREATIVE)) {
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
@@ -72,6 +59,38 @@ public class CrystalUseEvent implements Listener {
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid item"));
             e.setCancelled(false);
+            return;
+        }
+
+        // Check for conflicting enchants
+        for (Map.Entry<Enchantment, Integer> entry : currentItem.getEnchantments().entrySet()) {
+            if (entry.getKey().getKey().equals(enchantment.getKey())) continue; // allow the same enchant for stacking
+            if (entry.getKey().conflictsWith(enchantment)) {
+                Bukkit.broadcastMessage(EnchantCrystalsUtils.translateEnchantmentName(enchantment) + " conflicts with " + EnchantCrystalsUtils.translateEnchantmentName(entry.getKey()));
+                player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                e.setCancelled(false);
+                return;
+            }
+        }
+
+        // handle stacking enchants
+        if (currentItem.containsEnchantment(enchantment)) {
+            int currentEnchantLevel = currentItem.getEnchantmentLevel(enchantment);
+            int addedEnchantLevel = currentEnchantLevel + enchantmentLevel;
+
+            // if we add the enchant and the level goes over the enchants max, cancel
+            if (addedEnchantLevel > enchantment.getMaxLevel()) {
+                Bukkit.broadcastMessage("Combining this enchantment would exceed the max level");
+                player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                e.setCancelled(false);
+                return;
+            }
+
+            // combine the enchant levels
+            cursorItem.setAmount(cursorItem.getAmount() - 1);
+            currentItem.addEnchantment(enchantment, addedEnchantLevel);
+            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
+            Bukkit.broadcastMessage("Combined");
             return;
         }
 
