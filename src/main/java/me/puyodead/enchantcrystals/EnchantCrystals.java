@@ -1,11 +1,10 @@
 package me.puyodead.enchantcrystals;
 
 import me.puyodead.enchantcrystals.Commands.GiveCrystalCommand;
+import me.puyodead.enchantcrystals.Events.AnvilPrepareEvent;
 import me.puyodead.enchantcrystals.Events.CrystalUseEvent;
 import me.puyodead.enchantcrystals.Events.ItemEnchantEvent;
 import me.puyodead.enchantcrystals.Events.OpenInventoryEvent;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -24,7 +23,6 @@ public final class EnchantCrystals extends JavaPlugin {
         initConfig();
         initEvents();
         initCommands();
-        initCrystals();
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&d========================");
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bAuthor: &ePuyodead1");
@@ -35,7 +33,7 @@ public final class EnchantCrystals extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        CrystalType.getCrystals().clear();
+        //
     }
 
     public void initConfig() {
@@ -53,6 +51,7 @@ public final class EnchantCrystals extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CrystalUseEvent(), this);
         getServer().getPluginManager().registerEvents(new ItemEnchantEvent(), this);
         getServer().getPluginManager().registerEvents(new OpenInventoryEvent(), this);
+        getServer().getPluginManager().registerEvents(new AnvilPrepareEvent(), this);
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Events &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
     }
@@ -61,15 +60,6 @@ public final class EnchantCrystals extends JavaPlugin {
         final long STARTED = System.currentTimeMillis();
 
         Objects.requireNonNull(getCommand("givecrystal")).setExecutor(new GiveCrystalCommand());
-
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Commands &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
-    }
-
-    public void initCrystals() {
-        final long STARTED = System.currentTimeMillis();
-        for (Enchantment e : EnchantmentWrapper.values()) {
-            new CrystalType(e, getConfig().getStringList("settings.crystal.lore"));
-        }
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Commands &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
     }

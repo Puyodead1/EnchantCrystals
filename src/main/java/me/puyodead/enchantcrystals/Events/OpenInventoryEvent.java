@@ -1,12 +1,12 @@
 package me.puyodead.enchantcrystals.Events;
 
-import de.tr7zw.nbtapi.NBTCompoundList;
-import de.tr7zw.nbtapi.NBTItem;
-import de.tr7zw.nbtapi.NBTListCompound;
+import de.tr7zw.changeme.nbtapi.NBTCompoundList;
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import me.puyodead.enchantcrystals.Crystal;
-import me.puyodead.enchantcrystals.CrystalType;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -14,8 +14,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.inventory.MerchantRecipe;
-
-import java.util.Objects;
 
 public class OpenInventoryEvent implements Listener {
 
@@ -36,11 +34,13 @@ public class OpenInventoryEvent implements Listener {
 
             if (!originalResult.getType().equals(Material.ENCHANTED_BOOK)) continue;
 
-            NBTItem nbti = new NBTItem(originalResult);
-            NBTCompoundList list = nbti.getCompoundList("StoredEnchantments");
-            NBTListCompound listCompound = list.get(0);
-            final short level = listCompound.getShort("lvl");
-            final String key = listCompound.getString("id");
+            final NBTItem nbti = new NBTItem(originalResult);
+            final NBTCompoundList list = nbti.getCompoundList("StoredEnchantments");
+            final NBTListCompound listCompound = list.get(0);
+            final int level = listCompound.getInteger("lvl");
+            final NamespacedKey enchantmentKey = NamespacedKey.fromString(listCompound.getString("id"));
+
+            final Enchantment enchantment = Enchantment.getByKey(enchantmentKey);
 
             // incase we ever get to multiple enchants, use this
 //            for (NBTListCompound listCompound : list) {
@@ -49,10 +49,8 @@ public class OpenInventoryEvent implements Listener {
 //                System.out.println(level + ";" + key);
 //            }
 
-            final CrystalType crystalType = CrystalType.valueOf(NamespacedKey.fromString(key));
-            if (Objects.isNull(crystalType)) continue;
-            final Crystal crystal = new Crystal(crystalType, level);
-            final MerchantRecipe newRecipe = new MerchantRecipe(crystal.getItemStack(), merchantRecipe.getMaxUses());
+            final Crystal crystal = new Crystal().addEnchantment(enchantment, level);
+            final MerchantRecipe newRecipe = new MerchantRecipe(crystal.build().getItemStack(), merchantRecipe.getMaxUses());
             newRecipe.setIngredients(merchantRecipe.getIngredients());
             // add it
             merchantInventory.getMerchant().setRecipe(i, newRecipe);

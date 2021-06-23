@@ -1,8 +1,6 @@
 package me.puyodead.enchantcrystals.Events;
 
 import me.puyodead.enchantcrystals.Crystal;
-import me.puyodead.enchantcrystals.CrystalType;
-import me.puyodead.enchantcrystals.EnchantCrystalsUtils;
 import me.puyodead.enchantcrystals.ReflectionUtil;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -31,20 +29,13 @@ public class ItemEnchantEvent implements Listener {
             return;
         }
 
-        // process the crystals
+        final Crystal crystal = new Crystal();
+
+        // add the enchants to the crystal
         for (final Enchantment enchantment : e.getEnchantsToAdd().keySet()) {
             final int level = e.getEnchantsToAdd().get(enchantment);
 
-            final CrystalType crystalType = CrystalType.valueOf(enchantment.getKey());
-
-            if (Objects.isNull(crystalType)) {
-                EnchantCrystalsUtils.sendPlayer(e.getEnchanter(), "&cAn error occurred!");
-                e.setCancelled(false);
-                return;
-            }
-
-            final Crystal crystal = new Crystal(crystalType, level, 1);
-            e.getEnchanter().getInventory().addItem(crystal.getItemStack());
+            crystal.addEnchantment(enchantment, level);
         }
 
         // take lapiz
@@ -56,6 +47,9 @@ public class ItemEnchantEvent implements Listener {
         // take exp if not in creative
         if (!e.getEnchanter().getGameMode().equals(GameMode.CREATIVE))
             e.getEnchanter().setLevel(e.getEnchanter().getLevel() - e.getExpLevelCost());
+
+        // add the crystal to the players inventory
+        e.getEnchanter().getInventory().addItem(crystal.build().getItemStack());
 
         // play enchantment sound
         e.getEnchanter().getWorld().playSound(e.getEnchanter().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 1.0f);

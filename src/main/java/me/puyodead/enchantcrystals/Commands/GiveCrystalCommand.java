@@ -1,7 +1,6 @@
 package me.puyodead.enchantcrystals.Commands;
 
 import me.puyodead.enchantcrystals.Crystal;
-import me.puyodead.enchantcrystals.CrystalType;
 import me.puyodead.enchantcrystals.EnchantCrystals;
 import me.puyodead.enchantcrystals.EnchantCrystalsUtils;
 import org.bukkit.Bukkit;
@@ -9,11 +8,11 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,15 +38,18 @@ public class GiveCrystalCommand implements CommandExecutor {
             return true;
         } else if (l == 1) {
             // player specified one argument, aka a crystal name OR command 'enchants'
-            if (args[0].equals("enchants")) {
-                HashMap<NamespacedKey, CrystalType> crystals = CrystalType.getCrystals();
-                for (final CrystalType c : crystals.values()) {
-                    EnchantCrystalsUtils.sendPlayer(player, c.getKey().getKey());
-                }
-            } else {
-                final String enchantmentName = args[0].toLowerCase();
-                return giveCrystal(player, enchantmentName);
-            }
+//            if (args[0].equals("enchants")) {
+//                HashMap<NamespacedKey, CrystalType> crystals = CrystalType.getCrystals();
+//                for (final CrystalType c : crystals.values()) {
+//                    EnchantCrystalsUtils.sendPlayer(player, c.getKey().getKey());
+//                }
+//            } else {
+//                final String enchantmentName = args[0].toLowerCase();
+//                return giveCrystal(player, enchantmentName);
+//            }
+
+            final String enchantmentName = args[0].toLowerCase();
+            return giveCrystal(player, enchantmentName);
         } else if (l == 2) {
             //player specified crystal name and amount
             final String enchantmentName = args[0].toLowerCase();
@@ -76,20 +78,19 @@ public class GiveCrystalCommand implements CommandExecutor {
         return false;
     }
 
-    private void sendGiveSuccessMessage(Player player, CrystalType type, int amount, int level) {
-        EnchantCrystalsUtils.sendPlayer(player,
-                Objects.requireNonNull(EnchantCrystalsUtils.replace(
-                        Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal given")), type, amount, level, player)));
+    private void sendGiveSuccessMessage(Player player, Crystal crystal) {
+//        EnchantCrystalsUtils.sendPlayer(player,
+//                Objects.requireNonNull(EnchantCrystalsUtils.replace(
+//                        Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal given")), e, level, player)));
+        EnchantCrystalsUtils.sendPlayer(player, "Given " + crystal.getAmount() + " crystal");
     }
 
-    private Crystal makeCrystal(String enchantmentName, int amount, int level) {
-        final CrystalType crystalType = CrystalType.valueOf(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
-
-        if (Objects.isNull(crystalType)) {
+    private Crystal makeCrystal(Enchantment enchantment, int amount, int level) {
+        if (Objects.isNull(enchantment)) {
             return null;
         }
 
-        return new Crystal(crystalType, level, amount);
+        return new Crystal().addEnchantment(enchantment, level).setAmount(amount);
     }
 
     private boolean ensureCrystalNotNull(Player player, Crystal crystal) {
@@ -98,31 +99,37 @@ public class GiveCrystalCommand implements CommandExecutor {
             return true;
         }
 
-        player.getInventory().addItem(crystal.getItemStack());
-        sendGiveSuccessMessage(player, crystal.getType(), crystal.getAmount(), crystal.getLevel());
+        player.getInventory().addItem(crystal.build().getItemStack());
+        sendGiveSuccessMessage(player, crystal);
         return true;
     }
 
     public boolean giveCrystal(Player player, String enchantmentName) {
-        final Crystal crystal = makeCrystal(enchantmentName, 1, 1);
+        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
+        final Crystal crystal = makeCrystal(enchantment, 1, 1);
+        System.out.println(crystal);
         return ensureCrystalNotNull(player, crystal);
     }
 
     public boolean giveCrystal(Player player, String enchantmentName, int amount) {
-        final Crystal crystal = makeCrystal(enchantmentName, amount, 1);
+        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
+        final Crystal crystal = makeCrystal(enchantment, amount, 1);
         return ensureCrystalNotNull(player, crystal);
     }
 
     public boolean giveCrystal(Player player, String enchantmentName, int amount, int level) {
-        final Crystal crystal = makeCrystal(enchantmentName, amount, level);
+        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
+        if (Objects.isNull(enchantment)) return false;
+
+        final Crystal crystal = makeCrystal(enchantment, amount, level);
 
         if (Objects.isNull(crystal)) {
             EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid enchantment"));
             return true;
         }
 
-        if (level > crystal.getType().getMaxLevel()) {
-            EnchantCrystalsUtils.sendPlayer(player, "&cEnchantment level out of bounds! Must be between 1 and " + crystal.getType().getMaxLevel());
+        if (level > enchantment.getMaxLevel()) {
+            EnchantCrystalsUtils.sendPlayer(player, "&cEnchantment level out of bounds! Must be between 1 and " + enchantment.getMaxLevel());
             return true;
         }
 
@@ -130,21 +137,25 @@ public class GiveCrystalCommand implements CommandExecutor {
     }
 
     public boolean giveCrystal(Player sender, String enchantmentName, int amount, int level, Player player) {
-        final Crystal crystal = makeCrystal(enchantmentName, amount, level);
+        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
+        if (Objects.isNull(enchantment)) return false;
+        final Crystal crystal = makeCrystal(enchantment, amount, level);
 
         if (Objects.isNull(crystal)) {
             EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid enchantment"));
             return true;
         }
 
-        if (level > crystal.getType().getMaxLevel()) {
-            EnchantCrystalsUtils.sendPlayer(player, "&cEnchantment level out of bounds! Must be between 1 and " + crystal.getType().getMaxLevel());
+        if (level > enchantment.getMaxLevel()) {
+            EnchantCrystalsUtils.sendPlayer(player, "&cEnchantment level out of bounds! Must be between 1 and " + enchantment.getMaxLevel());
             return true;
         }
 
-        player.getInventory().addItem(crystal.getItemStack());
-        EnchantCrystalsUtils.sendSender(sender, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal given to player")), crystal.getType(), crystal.getAmount(), crystal.getLevel(), player));
-        EnchantCrystalsUtils.sendSender(player, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal received")), crystal.getType(), crystal.getAmount(), crystal.getLevel(), player));
+        player.getInventory().addItem(crystal.build().getItemStack());
+//        EnchantCrystalsUtils.sendSender(sender, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal given to player")), enchantment, crystal.getAmount(), crystal.getLevel(), player));
+//        EnchantCrystalsUtils.sendSender(player, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal received")), crystal.getType(), crystal.getAmount(), crystal.getLevel(), player));
+        EnchantCrystalsUtils.sendPlayer(sender, "success");
+        EnchantCrystalsUtils.sendPlayer(player, "got crystal");
         return true;
     }
 }

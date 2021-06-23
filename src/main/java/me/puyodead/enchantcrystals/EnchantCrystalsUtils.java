@@ -1,11 +1,10 @@
 package me.puyodead.enchantcrystals;
 
-import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -39,10 +38,10 @@ public class EnchantCrystalsUtils {
         }
     }
 
-    public static List<String> colorList(List<String> list, CrystalType type, int crystalLevel) {
+    public static List<String> colorList(List<String> list) {
         List<String> newList = new ArrayList<>();
         for (String s : list) {
-            newList.add(colorize(replace(s, type, crystalLevel)));
+            newList.add(colorize(s));
         }
 
         return newList;
@@ -77,48 +76,53 @@ public class EnchantCrystalsUtils {
         return String.join(" ", list);
     }
 
-    public static String replace(String string, String type, int amount, int level) {
-        return string.replace("%CRYSTAL_AMOUNT%", String.valueOf(amount))
-                .replace("%CRYSTAL_TYPE%", type)
-                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", type)))
-                .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level));
-    }
-
-    public static String replace(String string, String type, int amount) {
-        return string.replace("%CRYSTAL_AMOUNT%", String.valueOf(amount))
-                .replace("%CRYSTAL_TYPE%", type)
-                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", type)));
-    }
-
-    public static String replace(String string, CrystalType type, int amount, int level) {
-        return string.replace("%CRYSTAL_AMOUNT%", String.valueOf(amount))
-                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(type.getEnchantment()))
-                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", normalize(type.getName()))))
-                .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level));
-    }
-
-    public static String replace(String string, CrystalType type, int level) {
+    //    public static String replace(String string, String type, int amount, int level) {
+//        return string.replace("%CRYSTAL_AMOUNT%", String.valueOf(amount))
+//                .replace("%CRYSTAL_TYPE%", type)
+//                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", type)))
+//                .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level));
+//    }
+//
+//    public static String replace(String string, String type, int amount) {
+//        return string.replace("%CRYSTAL_AMOUNT%", String.valueOf(amount))
+//                .replace("%CRYSTAL_TYPE%", type)
+//                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", type)));
+//    }
+//
+//    public static String replace(String string, Enchantment enchantment, int amount, int level) {
+//        return string.replace("%CRYSTAL_AMOUNT%", String.valueOf(amount))
+//                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(enchantment))
+//                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", normalize(enchantment.getName()))))
+//                .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level));
+//    }
+//
+    public static String replace(String string, Enchantment enchantment, int level) {
         return string
-                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(type.getEnchantment()))
-                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", normalize(type.getName()))))
+                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(enchantment))
+                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", normalize(enchantment.getName()))))
                 .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level));
     }
 
-    public static String replace(String string, CrystalType type, int level, ItemStack item) {
+    public static String replace(String string, Enchantment enchantment, int level, ItemStack item) {
         return string.replace("%ITEM_TYPE%", normalize(item.getType().name()))
-                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(type.getEnchantment()))
-                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", normalize(type.getName()))))
+                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(enchantment))
+                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", normalize(enchantment.getName()))))
                 .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level))
                 .replace("%ITEM_DISPLAY_NAME%", item.getItemMeta() != null && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : normalize(item.getType().name()));
     }
 
-    public static String replace(String string, CrystalType type, int amount, int level, Player player) {
-        return string.replace("%CRYSTAL_AMOUNT%", String.valueOf(amount))
-                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(type.getEnchantment()))
-                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", translateEnchantmentName(type.getEnchantment()))))
-                .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level))
-                .replace("%PLAYER_NAME%", player.getName());
+    public static String replace(String string, int amountOfEnchants) {
+        return string.replace("%ENCHANTMENTS_SIZE%", String.valueOf(amountOfEnchants))
+                .replace("%ENCHANT_STRING%", Objects.requireNonNull(amountOfEnchants == 1 ? EnchantCrystals.plugin.getConfig().getString("messages.enchant") : EnchantCrystals.plugin.getConfig().getString("messages.enchants")));
     }
+
+//    public static String replace(String string, Enchantment enchantment, int level, Player player) {
+//        return string
+//                .replace("%CRYSTAL_TYPE%", translateEnchantmentName(enchantment))
+//                .replace("%DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")).replace("%CRYSTAL_TYPE%", translateEnchantmentName(enchantment))))
+//                .replace("%CRYSTAL_LEVEL%", translateEnchantmentLevel(level))
+//                .replace("%PLAYER_NAME%", player.getName());
+//    }
 
     public static String translateEnchantmentName(Enchantment e) {
         return new TranslatableComponent("enchantment.minecraft." + e.getKey().getKey()).toPlainText();
@@ -129,27 +133,6 @@ public class EnchantCrystalsUtils {
     }
 
     public static boolean isCrystal(NBTItem nbtItem) {
-        // if this NBT doesnt exist, its not a crystal
-        if (!nbtItem.hasKey("puyodead1:enchantcrystals")) return false;
-
-        // if these are missing, its an invalid crystal somehow
-        if (!nbtItem.hasKey("enchantmentkey") || !nbtItem.hasKey("enchantmentlevel")) {
-            Bukkit.broadcastMessage("Invalid crystal");
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isCrystal(Player player, NBTItem nbtItem) {
-        // if this NBT doesnt exist, its not a crystal
-        if (!nbtItem.hasKey("puyodead1:enchantcrystals")) return false;
-
-        // if these are missing, its an invalid crystal somehow
-        if (!nbtItem.hasKey("enchantmentkey") || !nbtItem.hasKey("enchantmentlevel")) {
-            Bukkit.broadcastMessage("Invalid crystal");
-            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            return false;
-        }
-        return true;
+        return nbtItem.hasKey("enchantcrystals:isEnchantCrystal");
     }
 }

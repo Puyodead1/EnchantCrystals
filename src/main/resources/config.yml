@@ -2,11 +2,15 @@
 settings:
   crystal:
     material: NETHER_STAR
-    display name: "&6Enchantment Crystal &8[&7%CRYSTAL_TYPE% %CRYSTAL_LEVEL%&8]"
+    display name: "&6Enchantment Crystal &8[&7%ENCHANTMENTS_SIZE% %ENCHANT_STRING%&8]"
+    enchant lore: "&7%ENCHANT_NAME% %ENCHANT_LEVEL%"
     lore:
+      - ""
       - "&7Right click on an item to apply."
 
 messages:
+  enchants: "Enchants"
+  enchant: "Enchant"
   already enchanted: "&cThat item already contains this enchant!"
   success: "&aSuccessfully applied &e%CRYSTAL_TYPE% %CRYSTAL_LEVEL% &ato &e%ITEM_DISPLAY_NAME%&a!"
   invalid item: "&cThat enchant cannot be added to this item!"
