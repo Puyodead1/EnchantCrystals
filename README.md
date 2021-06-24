@@ -4,21 +4,21 @@ Plugin that changes vanilla enchanting by adding Crystals that can contain one o
 by right-clicking on an item. Crystals can be obtained in an enchanting table, or from merchants (Both of these features
 are configurable). This plugin is also fully customizable.
 
-Enchants can be Stacked/Combined - ex: Knockback 1 + Knockback 1 = Knockback 2 Enchants can be Upgraded - ex: Knockback
-2 would overwrite Knockback 1
+Enchants can be Stacked/Combined - ex: Knockback 1 + Knockback 1 = Knockback 2<br>
+Enchants can be Upgraded - ex: Knockback 2 would overwrite Knockback 1
 
 Works with all vanilla enchants!
 
 ## Showcase
 
-![Crystal Example 1](https://i.imgur.com/QAJrvak.png)
+![Crystal Example 1](https://i.imgur.com/QAJrvak.png) <br>
 ![Crystal Example 2](https://i.imgur.com/PjmRzo5.png)
 
-![Merchant Demo](https://i.imgur.com/j63FXFv.gif)
-![Enchanting Table Demo](https://i.imgur.com/5tD3O1F.gif)
-![Application Demo](https://i.imgur.com/RgQbI8P.gif)
-![Stacking Demo](https://i.imgur.com/naL8H43.gif)
-![Upgrade Demo](https://i.imgur.com/drMuA9y.gif)
+![Merchant Demo](https://i.imgur.com/j63FXFv.gif) <br>
+![Enchanting Table Demo](https://i.imgur.com/5tD3O1F.gif) <br>
+![Application Demo](https://i.imgur.com/RgQbI8P.gif) <br>
+![Stacking Demo](https://i.imgur.com/naL8H43.gif) <br>
+![Upgrade Demo](https://i.imgur.com/drMuA9y.gif) <br>
 
 ## Permissions and Commands
 
