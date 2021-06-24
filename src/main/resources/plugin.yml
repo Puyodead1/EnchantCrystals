@@ -4,7 +4,7 @@ main: me.puyodead.enchantcrystals.EnchantCrystals
 author: Puyodead1
 api-version: 1.13
 commands:
-  givecrystal:
+  enchantcrystals:
     description: Give a crystal
-    aliases: [gc]
-    usage: /gc <enchant name> [amount] [level] [player]
+    aliases: [ ecr ]
+    usage: /ecr [enchants|give|add] <enchant name> [level] [amount] [player]

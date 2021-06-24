@@ -1,6 +1,7 @@
 package me.puyodead.enchantcrystals.Events;
 
 import me.puyodead.enchantcrystals.Crystal;
+import me.puyodead.enchantcrystals.EnchantCrystals;
 import me.puyodead.enchantcrystals.ReflectionUtil;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -19,12 +20,13 @@ public class ItemEnchantEvent implements Listener {
 
     @EventHandler
     public void onEnchantItemEvent(EnchantItemEvent e) {
+        if (!EnchantCrystals.plugin.getConfig().getBoolean("settings.enchanting_tables.enabled")) return;
         e.setCancelled(true);
         final EnchantingInventory inventory = (EnchantingInventory) e.getInventory();
         final ItemStack primary = inventory.getItem();
         final ItemStack secondary = inventory.getSecondary();
 
-        if (Objects.isNull(primary) || Objects.isNull(secondary) || !primary.getType().equals(Material.BOOK)) {
+        if (Objects.isNull(primary) || (EnchantCrystals.plugin.getConfig().getBoolean("settings.enchanting_tables.require_lapis") && Objects.isNull(secondary)) || !primary.getType().equals(Material.BOOK)) {
             e.setCancelled(false);
             return;
         }
@@ -38,8 +40,10 @@ public class ItemEnchantEvent implements Listener {
             crystal.addEnchantment(enchantment, level);
         }
 
-        // take lapiz
-        secondary.setAmount(secondary.getAmount() - e.getExpLevelCost());
+        if (EnchantCrystals.plugin.getConfig().getBoolean("settings.enchanting_tables.require_lapis")) {
+            // take lapis
+            secondary.setAmount(secondary.getAmount() - e.getExpLevelCost());
+        }
 
         // take the book
         e.getInventory().setItem(0, new ItemStack(Material.AIR));
@@ -71,7 +75,6 @@ public class ItemEnchantEvent implements Listener {
             enchantSlotsField.setAccessible(true);
             Field containerProperty = containerEnchantTable.getClass().getDeclaredField("i");
             containerProperty.setAccessible(true);
-            System.out.println(seed);
             ReflectionUtil.invokeMethod(ContainerProperty.cast(containerProperty.get(containerEnchantTable)), "set", new Class[]{int.class}, new Object[]{seed});
         } catch (Exception ex) {
             ex.printStackTrace();

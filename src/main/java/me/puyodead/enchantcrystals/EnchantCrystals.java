@@ -1,10 +1,12 @@
 package me.puyodead.enchantcrystals;
 
-import me.puyodead.enchantcrystals.Commands.GiveCrystalCommand;
+import me.puyodead.enchantcrystals.Commands.EnchantCrystalsCommand;
+import me.puyodead.enchantcrystals.Commands.TabCompletion;
 import me.puyodead.enchantcrystals.Events.AnvilPrepareEvent;
 import me.puyodead.enchantcrystals.Events.CrystalUseEvent;
 import me.puyodead.enchantcrystals.Events.ItemEnchantEvent;
 import me.puyodead.enchantcrystals.Events.OpenInventoryEvent;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -58,8 +60,10 @@ public final class EnchantCrystals extends JavaPlugin {
 
     public void initCommands() {
         final long STARTED = System.currentTimeMillis();
+        final PluginCommand enchantcrystals = getCommand("enchantcrystals");
 
-        Objects.requireNonNull(getCommand("givecrystal")).setExecutor(new GiveCrystalCommand());
+        enchantcrystals.setExecutor(new EnchantCrystalsCommand());
+        enchantcrystals.setTabCompleter(new TabCompletion());
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Commands &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
     }

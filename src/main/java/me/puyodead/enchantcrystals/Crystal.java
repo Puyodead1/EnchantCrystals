@@ -1,8 +1,6 @@
 package me.puyodead.enchantcrystals;
 
-import de.tr7zw.changeme.nbtapi.NBTCompoundList;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -16,17 +14,10 @@ public class Crystal {
     private int amount = 1;
     private ItemStack itemStack = null;
 
-    public Crystal() {
-    }
-
     public Crystal addEnchantment(final Enchantment e, final int level) {
         this.enchantments.put(e, level);
 
         return this;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 
     public Crystal setAmount(int amount) {
@@ -36,31 +27,30 @@ public class Crystal {
     }
 
     public Crystal build() {
-        final ItemStack itemStack = new ItemStack(Material.NETHER_STAR);
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.display name")), this.enchantments.size())));
-        List<String> loreList = new ArrayList<>();
-
-        for (final Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
-            loreList.add(EnchantCrystalsUtils.colorize(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.crystal.enchant lore")).replace("%ENCHANT_NAME%", EnchantCrystalsUtils.translateEnchantmentName(entry.getKey())).replace("%ENCHANT_LEVEL%", EnchantCrystalsUtils.translateEnchantmentLevel(entry.getValue()))));
+        Material material = Material.matchMaterial(EnchantCrystals.plugin.getConfig().getString("settings.item.material"));
+        
+        // if the material isn't found, print to console and use nether star
+        if (Objects.isNull(material)) {
+            System.out.println("[WARN]: Attempted to match material but got null! Make sure you are using the right material name! Falling back to Nether Star");
+            material = Material.NETHER_STAR;
         }
 
-        loreList.addAll(EnchantCrystalsUtils.colorList(EnchantCrystals.plugin.getConfig().getStringList("settings.crystal.lore")));
+        final ItemStack itemStack = new ItemStack(material);
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceDisplayName(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.item.display_name")), this.enchantments.size())));
+
+        for (final Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
+            itemMeta.addEnchant(entry.getKey(), entry.getValue(), false);
+        }
+
+        List<String> loreList = new ArrayList<>(EnchantCrystalsUtils.colorList(EnchantCrystals.plugin.getConfig().getStringList("settings.item.lore")));
 
         itemMeta.setLore(loreList);
         itemStack.setItemMeta(itemMeta);
+        itemStack.setAmount(this.amount);
 
         final NBTItem nbti = new NBTItem(itemStack);
         nbti.setBoolean("enchantcrystals:isEnchantCrystal", true);
-
-        final NBTCompoundList nbtList = nbti.getCompoundList("StoredEnchants");
-
-        for (final Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
-            final NBTListCompound listCompound = nbtList.addCompound();
-            listCompound.setString("id", entry.getKey().getKey().toString());
-            listCompound.setInteger("lvl", entry.getValue());
-
-        }
 
         this.itemStack = nbti.getItem();
         return this;
@@ -68,5 +58,19 @@ public class Crystal {
 
     public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    public void addEnchantments(Map<Enchantment, Integer> enchantments) {
+        for (final Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+            this.addEnchantment(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public void removeEnchantment(final Enchantment enchantment) {
+        this.enchantments.remove(enchantment);
+    }
+
+    public HashMap<Enchantment, Integer> getEnchantments() {
+        return enchantments;
     }
 }
