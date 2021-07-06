@@ -1,9 +1,11 @@
 package me.puyodead.enchantcrystals.Events;
 
+import me.puyodead.enchantcrystals.Crystal;
 import me.puyodead.enchantcrystals.EnchantCrystals;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
@@ -33,14 +35,14 @@ public class ItemEnchantEvent implements Listener {
             return;
         }
 
-        //final Crystal crystal = new Crystal();
+        final Crystal crystal = new Crystal();
 
         // add the enchants to the crystal
-//        for (final Enchantment enchantment : e.getEnchantsToAdd().keySet()) {
-//            final int level = e.getEnchantsToAdd().get(enchantment);
-//
-//            crystal.addEnchantment(enchantment, level);
-//        }
+        for (final Enchantment enchantment : e.getEnchantsToAdd().keySet()) {
+            final int level = e.getEnchantsToAdd().get(enchantment);
+
+            crystal.addEnchantment(enchantment, level);
+        }
 
         if (EnchantCrystals.getPlugin().getConfig().getBoolean("settings.enchanting_tables.require_lapis")) {
             // take lapis
@@ -55,7 +57,7 @@ public class ItemEnchantEvent implements Listener {
 //            e.getEnchanter().setLevel(e.getEnchanter().getLevel() - e.getExpLevelCost());
 
         // add the crystal to the players inventory
-        //  e.getEnchanter().getInventory().addItem(crystal.build().getItemStack());
+        e.getEnchanter().getInventory().addItem(crystal.build().getItemStack());
 
         // play enchantment sound
         e.getEnchanter().getWorld().playSound(e.getEnchanter().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 1.0f);

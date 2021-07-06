@@ -13,6 +13,7 @@ public class NMS_v1_17_R1 implements NMSBase {
         Class<?> CraftInventoryView = ReflectionUtil.getOBCClass("inventory.CraftInventoryView");
         Class<?> CraftPlayer = ReflectionUtil.getOBCClass("entity.CraftPlayer");
         Class<?> ItemStack = Class.forName("net.minecraft.world.item.ItemStack");
+        Class<?> ContainerProperty = Class.forName("net.minecraft.world.inventory.ContainerProperty");
 
 
         // get the entity player
@@ -24,14 +25,15 @@ public class NMS_v1_17_R1 implements NMSBase {
         Object enchantmentMenu = ReflectionUtil.getHandle(container);
 
         // change the enchantment seed
-        ReflectionUtil.invokeMethod(entityPlayer, "onEnchantmentPerformed", new Class[]{ItemStack, int.class}, new Object[]{null, cost});
+        ReflectionUtil.invokeMethod(entityPlayer, "enchantDone", new Class[]{ItemStack, int.class}, new Object[]{null, cost});
 
-        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "enchantmentSeed");
+        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "cl");
 
         // change enchantment seed on enchant menu data slot
-        Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("enchantmentSeed"); // data slot/container property
+        Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("q"); // data slot/container property
         enchantmentSeedField.setAccessible(true);
         Object dataSlot = enchantmentSeedField.get(enchantmentMenu);
-        ReflectionUtil.invokeMethod(dataSlot, "set", new Class[]{int.class}, new Object[]{newEnchantmentSeed});
+
+        ReflectionUtil.invokeMethod(ContainerProperty.cast(dataSlot), "set", new Class[]{int.class}, new Object[]{newEnchantmentSeed});
     }
 }
