@@ -6,6 +6,8 @@ import me.puyodead.enchantcrystals.Events.AnvilPrepareEvent;
 import me.puyodead.enchantcrystals.Events.CrystalUseEvent;
 import me.puyodead.enchantcrystals.Events.ItemEnchantEvent;
 import me.puyodead.enchantcrystals.Events.OpenInventoryEvent;
+import me.puyodead.enchantcrystals.NMS.NMSBase;
+import me.puyodead.enchantcrystals.NMS.NMS_v1_17_R1;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,12 +15,14 @@ import java.util.Objects;
 
 public final class EnchantCrystals extends JavaPlugin {
 
-    public static EnchantCrystals plugin;
+    private static EnchantCrystals plugin;
     private static final String PREFIX = "&7[&dEnchantCrystals&7] ";
+    private NMSBase nms;
 
     @Override
     public void onEnable() {
         plugin = this;
+        nms = new NMS_v1_17_R1();
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&b=============================================================");
 
@@ -50,10 +54,10 @@ public final class EnchantCrystals extends JavaPlugin {
     public void initEvents() {
         final long STARTED = System.currentTimeMillis();
 
-        getServer().getPluginManager().registerEvents(new CrystalUseEvent(), this);
-        getServer().getPluginManager().registerEvents(new ItemEnchantEvent(), this);
-        getServer().getPluginManager().registerEvents(new OpenInventoryEvent(), this);
-        getServer().getPluginManager().registerEvents(new AnvilPrepareEvent(), this);
+        getServer().getPluginManager().registerEvents(new CrystalUseEvent(this), this);
+        getServer().getPluginManager().registerEvents(new ItemEnchantEvent(this), this);
+        getServer().getPluginManager().registerEvents(new OpenInventoryEvent(this), this);
+        getServer().getPluginManager().registerEvents(new AnvilPrepareEvent(this), this);
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Events &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
     }
@@ -66,5 +70,13 @@ public final class EnchantCrystals extends JavaPlugin {
         enchantcrystals.setTabCompleter(new TabCompletion());
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Commands &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
+    }
+
+    public static EnchantCrystals getPlugin() {
+        return plugin;
+    }
+
+    public NMSBase getNMS() {
+        return nms;
     }
 }

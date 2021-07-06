@@ -59,14 +59,14 @@ public class EnchantCrystalsUtils {
     public static String replace(final String string, final Enchantment enchantment, final int level, final ItemStack itemStack) {
         return string.replace("%ITEM_TYPE%", normalize(itemStack.getType().name()))
                 .replace("%ENCHANTMENT_NAME%", translateEnchantmentName(enchantment))
-                .replace("%CRYSTAL_DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.item.display_name")).replace("%ENCHANTMENT_NAME%", normalize(enchantment.getName()))))
+                .replace("%CRYSTAL_DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("settings.item.display_name")).replace("%ENCHANTMENT_NAME%", normalize(enchantment.getName()))))
                 .replace("%ENCHANTMENT_LEVEL%", translateEnchantmentLevel(level))
                 .replace("%ITEM_DISPLAY_NAME%", itemStack.getItemMeta() != null && itemStack.getItemMeta().hasDisplayName() ? itemStack.getItemMeta().getDisplayName() : normalize(itemStack.getType().name()));
     }
 
     public static String replaceDisplayName(final String string, final int amountOfEnchants) {
         return string.replace("%ENCHANTMENT_COUNT%", String.valueOf(amountOfEnchants))
-                .replace("%ENCHANTMENT_STRING%", Objects.requireNonNull(amountOfEnchants == 1 ? EnchantCrystals.plugin.getConfig().getString("messages.enchantment_singular") : EnchantCrystals.plugin.getConfig().getString("messages.enchantment_plural")));
+                .replace("%ENCHANTMENT_STRING%", Objects.requireNonNull(amountOfEnchants == 1 ? EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_singular") : EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_plural")));
     }
 
     public static String replaceInvalid(final String string, final Enchantment enchantment, final ItemStack itemStack) {
@@ -104,7 +104,7 @@ public class EnchantCrystalsUtils {
     public static String replace(final String string, final Enchantment enchantment, final int level, final int amount, final Player player) {
         return string
                 .replace("%ENCHANTMENT_NAME%", translateEnchantmentName(enchantment))
-                .replace("%CRYSTAL_DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.item.display_name")).replace("%ENCHANTMENT_NAME%", translateEnchantmentName(enchantment))))
+                .replace("%CRYSTAL_DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("settings.item.display_name")).replace("%ENCHANTMENT_NAME%", translateEnchantmentName(enchantment))))
                 .replace("%ENCHANTMENT_LEVEL%", translateEnchantmentLevel(level))
                 .replace("%PLAYER_NAME%", player.getName())
                 .replace("%CRYSTAL_AMOUNT%", String.valueOf(amount));

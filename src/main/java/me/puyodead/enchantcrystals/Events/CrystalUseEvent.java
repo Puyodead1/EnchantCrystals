@@ -20,6 +20,12 @@ import java.util.Objects;
 
 public class CrystalUseEvent implements Listener {
 
+    private EnchantCrystals plugin;
+
+    public CrystalUseEvent(EnchantCrystals plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void CrystalUse(InventoryClickEvent e) {
         e.setCancelled(true);
@@ -32,7 +38,7 @@ public class CrystalUseEvent implements Listener {
         final ItemStack cursorItem = e.getCursor();
 
         // ensure that nothing is null, and that the items are not air, and that the cursorItem is only a nether star, also ignore stacking crystals
-        if (inventory == null || currentItem == null || cursorItem == null || currentItem.getType().equals(Material.AIR) || cursorItem.getType().equals(Material.AIR) || !cursorItem.getType().equals(Material.valueOf(EnchantCrystals.plugin.getConfig().getString("settings.item.material"))) || currentItem.getType().equals(Material.valueOf(EnchantCrystals.plugin.getConfig().getString("settings.item.material")))) {
+        if (inventory == null || currentItem == null || cursorItem == null || currentItem.getType().equals(Material.AIR) || cursorItem.getType().equals(Material.AIR) || !cursorItem.getType().equals(Material.valueOf(EnchantCrystals.getPlugin().getConfig().getString("settings.item.material"))) || currentItem.getType().equals(Material.valueOf(EnchantCrystals.getPlugin().getConfig().getString("settings.item.material")))) {
             e.setCancelled(false);
             return;
         }
@@ -46,7 +52,7 @@ public class CrystalUseEvent implements Listener {
 
         if (player.getGameMode().equals(GameMode.CREATIVE)) {
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.creative_error"));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.getPlugin().getConfig().getString("messages.creative_error"));
             e.setCancelled(false);
             return;
         }
@@ -183,16 +189,16 @@ public class CrystalUseEvent implements Listener {
 
     private void rejectInvalidItem(final Player player, final ItemStack currentItem, final Enchantment enchantment) {
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceInvalid(EnchantCrystals.plugin.getConfig().getString("messages.invalid_item"), enchantment, currentItem)));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceInvalid(EnchantCrystals.getPlugin().getConfig().getString("messages.invalid_item"), enchantment, currentItem)));
     }
 
     private void rejectExceed(final Player player, final Enchantment enchantment) {
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceExceed(EnchantCrystals.plugin.getConfig().getString("messages.enchantment_max_exceed"), enchantment)));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceExceed(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_max_exceed"), enchantment)));
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
     }
 
     private void refuseConflict(final Player player, final Enchantment enchantment, final Map.Entry<Enchantment, Integer> currentEntry) {
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceConflicting(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.enchantment_conflict")), enchantment, currentEntry.getKey())));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceConflicting(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_conflict")), enchantment, currentEntry.getKey())));
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
     }
 
@@ -200,7 +206,7 @@ public class CrystalUseEvent implements Listener {
         currentItem.addEnchantment(enchantment, cursorEnchantLevel);
         cursorItem.removeEnchantment(enchantment);
 
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(EnchantCrystals.plugin.getConfig().getString("messages.enchantment_success"), enchantment, cursorEnchantLevel, currentItem));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_success"), enchantment, cursorEnchantLevel, currentItem));
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
     }
 
@@ -209,7 +215,7 @@ public class CrystalUseEvent implements Listener {
         cursorItem.removeEnchantment(enchantment);
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replaceUpgraded(EnchantCrystals.plugin.getConfig().getString("messages.enchantment_upgraded"), enchantment, currentEnchantLevel, addedEnchantLevel));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replaceUpgraded(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_upgraded"), enchantment, currentEnchantLevel, addedEnchantLevel));
     }
 
     private void applyReplace(final Player player, final ItemStack currentItem, final ItemStack cursorItem, final Enchantment enchantment, final int cursorEnchantLevel) {
@@ -217,6 +223,6 @@ public class CrystalUseEvent implements Listener {
         cursorItem.removeEnchantment(enchantment);
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(EnchantCrystals.plugin.getConfig().getString("messages.enchantment_success"), enchantment, cursorEnchantLevel, currentItem));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_success"), enchantment, cursorEnchantLevel, currentItem));
     }
 }

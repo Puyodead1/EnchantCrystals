@@ -30,7 +30,7 @@ public class EnchantCrystalsCommand implements CommandExecutor {
 
         // missing permission
         if (!player.hasPermission("enchantcrystals.enchantcrystals")) {
-            EnchantCrystalsUtils.sendSender(sender, EnchantCrystals.plugin.getConfig().getString("messages.missing_permission"));
+            EnchantCrystalsUtils.sendSender(sender, EnchantCrystals.getPlugin().getConfig().getString("messages.missing_permission"));
             return true;
         }
 
@@ -40,7 +40,7 @@ public class EnchantCrystalsCommand implements CommandExecutor {
         if (l == 0) {
             // print help
             final List<String> list = Arrays.asList(
-                    "&6EnchantCrystals v" + EnchantCrystals.plugin.getDescription().getVersion() + " by Puyodead1",
+                    "&6EnchantCrystals v" + EnchantCrystals.getPlugin().getDescription().getVersion() + " by Puyodead1",
                     "&6=============================",
                     "&e/ecr enchants",
                     "&e/ecr give <enchant name>",
@@ -103,7 +103,7 @@ public class EnchantCrystalsCommand implements CommandExecutor {
             final int amount = Integer.parseInt(args.get(2));
             final Player player1 = Bukkit.getPlayer(args.get(3));
             if (Objects.isNull(player1)) {
-                EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid_player"));
+                EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.getPlugin().getConfig().getString("messages.invalid_player"));
                 return true;
             }
             return giveCrystal(player, enchantmentName, level, amount, player1);
@@ -133,13 +133,13 @@ public class EnchantCrystalsCommand implements CommandExecutor {
 
     private boolean addEnchant(final Player player, final String enchantmentName, final int level, final ItemStack itemStack, final int slot) {
         if (Objects.isNull(itemStack) || itemStack.getType().equals(Material.AIR) || !EnchantCrystalsUtils.isCrystal(new NBTItem(itemStack))) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystals.plugin.getConfig().getString("messages.add_invalid_item")));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystals.getPlugin().getConfig().getString("messages.add_invalid_item")));
             return true;
         }
 
         final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName));
         if (Objects.isNull(enchantment)) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystals.plugin.getConfig().getString("messages.invalid_enchantment")));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystals.getPlugin().getConfig().getString("messages.invalid_enchantment")));
             return true;
         }
 
@@ -152,7 +152,7 @@ public class EnchantCrystalsCommand implements CommandExecutor {
         // add the new enchant
         crystal.addEnchantment(enchantment, level);
         player.getInventory().setItem(slot, crystal.build().getItemStack());
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceAdd(EnchantCrystals.plugin.getConfig().getString("messages.add_success"), enchantment, level)));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceAdd(EnchantCrystals.getPlugin().getConfig().getString("messages.add_success"), enchantment, level)));
         return true;
     }
 
@@ -162,7 +162,7 @@ public class EnchantCrystalsCommand implements CommandExecutor {
 
     // Sends the success message to the player
     private void sendGiveSuccessMessage(Player player, Enchantment enchantment, int level, int amount) {
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceSuccess(EnchantCrystals.plugin.getConfig().getString("messages.crystal_given"), enchantment, level, amount)));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceSuccess(EnchantCrystals.getPlugin().getConfig().getString("messages.crystal_given"), enchantment, level, amount)));
     }
 
     // Creates and returns a new Crystal instance with specified enchantment
@@ -180,13 +180,13 @@ public class EnchantCrystalsCommand implements CommandExecutor {
         final Crystal crystal = makeCrystal(enchantment, level, amount);
 
         if (Objects.isNull(crystal)) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid_enchantment"));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.getPlugin().getConfig().getString("messages.invalid_enchantment"));
             return true;
         }
 
         // check bounds
         if (level > enchantment.getMaxLevel()) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.enchantment_bounds_error")).replace("%ENCHANTMENT_LEVEL_START%", String.valueOf(enchantment.getStartLevel()).replace("%ENCHANTMENT_LEVEL_MAX%", String.valueOf(enchantment.getMaxLevel())))));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_bounds_error")).replace("%ENCHANTMENT_LEVEL_START%", String.valueOf(enchantment.getStartLevel()).replace("%ENCHANTMENT_LEVEL_MAX%", String.valueOf(enchantment.getMaxLevel())))));
             return true;
         }
 
@@ -202,18 +202,18 @@ public class EnchantCrystalsCommand implements CommandExecutor {
         final Crystal crystal = makeCrystal(enchantment, level, amount);
 
         if (Objects.isNull(crystal)) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.plugin.getConfig().getString("messages.invalid_enchantment"));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.getPlugin().getConfig().getString("messages.invalid_enchantment"));
             return true;
         }
 
         if (level > enchantment.getMaxLevel()) {
-            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.enchantment_bounds_error")).replace("%ENCHANTMENT_LEVEL_START%", String.valueOf(enchantment.getStartLevel()).replace("%ENCHANTMENT_LEVEL_MAX%", String.valueOf(enchantment.getMaxLevel())))));
+            EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_bounds_error")).replace("%ENCHANTMENT_LEVEL_START%", String.valueOf(enchantment.getStartLevel()).replace("%ENCHANTMENT_LEVEL_MAX%", String.valueOf(enchantment.getMaxLevel())))));
             return true;
         }
 
         player.getInventory().addItem(crystal.build().getItemStack());
-        EnchantCrystalsUtils.sendSender(sender, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal_given_to_player")), enchantment, amount, level, player));
-        EnchantCrystalsUtils.sendSender(player, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("messages.crystal_received")), enchantment, amount, level, player));
+        EnchantCrystalsUtils.sendSender(sender, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.crystal_given_to_player")), enchantment, amount, level, player));
+        EnchantCrystalsUtils.sendSender(player, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.crystal_received")), enchantment, amount, level, player));
         return true;
     }
 }

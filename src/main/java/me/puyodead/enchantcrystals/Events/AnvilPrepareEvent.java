@@ -1,6 +1,7 @@
 package me.puyodead.enchantcrystals.Events;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import me.puyodead.enchantcrystals.EnchantCrystals;
 import me.puyodead.enchantcrystals.EnchantCrystalsUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -11,6 +12,12 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 
 public class AnvilPrepareEvent implements Listener {
+
+    private EnchantCrystals plugin;
+
+    public AnvilPrepareEvent(EnchantCrystals plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onPreapreAnvilEvent(PrepareAnvilEvent e) {

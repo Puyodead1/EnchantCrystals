@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals;
+package me.puyodead.enchantcrystals.NMS;
 
 import org.bukkit.Bukkit;
 
@@ -11,10 +11,6 @@ public class ReflectionUtil {
 
     public static String getVersion() {
         return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-    }
-
-    public static Class<?> getNMSClass(String name) throws ClassNotFoundException {
-        return Class.forName("net.minecraft.server." + getVersion() + "." + name);
     }
 
     public static Class<?> getOBCClass(String name) throws ClassNotFoundException {

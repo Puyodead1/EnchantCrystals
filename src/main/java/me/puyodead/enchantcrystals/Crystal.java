@@ -27,8 +27,8 @@ public class Crystal {
     }
 
     public Crystal build() {
-        Material material = Material.matchMaterial(EnchantCrystals.plugin.getConfig().getString("settings.item.material"));
-        
+        Material material = Material.matchMaterial(EnchantCrystals.getPlugin().getConfig().getString("settings.item.material"));
+
         // if the material isn't found, print to console and use nether star
         if (Objects.isNull(material)) {
             System.out.println("[WARN]: Attempted to match material but got null! Make sure you are using the right material name! Falling back to Nether Star");
@@ -37,13 +37,13 @@ public class Crystal {
 
         final ItemStack itemStack = new ItemStack(material);
         final ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceDisplayName(Objects.requireNonNull(EnchantCrystals.plugin.getConfig().getString("settings.item.display_name")), this.enchantments.size())));
+        itemMeta.setDisplayName(EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceDisplayName(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("settings.item.display_name")), this.enchantments.size())));
 
         for (final Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
             itemMeta.addEnchant(entry.getKey(), entry.getValue(), false);
         }
 
-        List<String> loreList = new ArrayList<>(EnchantCrystalsUtils.colorList(EnchantCrystals.plugin.getConfig().getStringList("settings.item.lore")));
+        List<String> loreList = new ArrayList<>(EnchantCrystalsUtils.colorList(EnchantCrystals.getPlugin().getConfig().getStringList("settings.item.lore")));
 
         itemMeta.setLore(loreList);
         itemStack.setItemMeta(itemMeta);

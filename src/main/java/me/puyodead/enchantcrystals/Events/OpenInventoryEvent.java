@@ -17,12 +17,18 @@ import java.util.Map;
 
 public class OpenInventoryEvent implements Listener {
 
+    private EnchantCrystals plugin;
+
+    public OpenInventoryEvent(EnchantCrystals plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     /**
      * This is for modifying merchant trades to change enchant books to enchant crystals
      */
     public void onInventoryOpen(InventoryOpenEvent e) {
-        if (!EnchantCrystals.plugin.getConfig().getBoolean("settings.merchants.enabled")) return;
+        if (!EnchantCrystals.getPlugin().getConfig().getBoolean("settings.merchants.enabled")) return;
         if (e.isCancelled()) return;
         // ensure its a merchant
         if (!e.getInventory().getType().equals(InventoryType.MERCHANT)) return;
