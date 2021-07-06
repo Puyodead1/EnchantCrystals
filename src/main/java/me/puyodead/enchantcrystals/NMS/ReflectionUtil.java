@@ -17,6 +17,17 @@ public class ReflectionUtil {
         return Class.forName("org.bukkit.craftbukkit." + getVersion() + "." + name);
     }
 
+    /**
+     * Gets a class from net.minecraft.server (1.16 and lower)
+     *
+     * @param name class name
+     * @return
+     * @throws ClassNotFoundException
+     */
+    public static Class<?> getNMSClass(String name) throws ClassNotFoundException {
+        return Class.forName("net.minecraft.server." + getVersion() + "." + name);
+    }
+
     public static Object getHandle(Object obj) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         return invokeMethod(obj, "getHandle", new Class[0], new Object[0]);
     }

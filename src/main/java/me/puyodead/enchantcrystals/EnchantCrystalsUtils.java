@@ -122,5 +122,4 @@ public class EnchantCrystalsUtils {
         // TODO: Since we add custom NBT to tell if an item is a crystal, we could convert crystal materials if they are changed in the config
         return nbtItem.hasKey("enchantcrystals:isEnchantCrystal");
     }
-
 }
