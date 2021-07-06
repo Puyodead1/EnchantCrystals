@@ -13,8 +13,6 @@ public class NMS_v1_17_R1 implements NMSBase {
         Class<?> CraftInventoryView = ReflectionUtil.getOBCClass("inventory.CraftInventoryView");
         Class<?> CraftPlayer = ReflectionUtil.getOBCClass("entity.CraftPlayer");
         Class<?> ItemStack = Class.forName("net.minecraft.world.item.ItemStack");
-        Class<?> ContainerProperty = Class.forName("net.minecraft.world.inventory.ContainerProperty");
-
 
         // get the entity player
         Object craftPlayer = CraftPlayer.cast(player);
@@ -34,6 +32,6 @@ public class NMS_v1_17_R1 implements NMSBase {
         enchantmentSeedField.setAccessible(true);
         Object dataSlot = enchantmentSeedField.get(enchantmentMenu);
 
-        ReflectionUtil.invokeMethod(ContainerProperty.cast(dataSlot), "set", new Class[]{int.class}, new Object[]{newEnchantmentSeed});
+        ReflectionUtil.invokeMethod(dataSlot, "set", new Class[]{int.class}, new Object[]{newEnchantmentSeed});
     }
 }
