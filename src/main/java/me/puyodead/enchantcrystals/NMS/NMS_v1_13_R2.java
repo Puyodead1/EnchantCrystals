@@ -6,13 +6,16 @@ import org.bukkit.inventory.InventoryView;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-public class NMS_v1_17_R1 implements NMSBase {
+/**
+ * 1.14
+ */
+public class NMS_v1_13_R2 implements NMSBase {
 
     @Override
     public void onEnchantmentPerformed(Player player, int cost, InventoryView view) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
         Class<?> CraftInventoryView = ReflectionUtil.getOBCClass("inventory.CraftInventoryView");
         Class<?> CraftPlayer = ReflectionUtil.getOBCClass("entity.CraftPlayer");
-        Class<?> ItemStack = Class.forName("net.minecraft.world.item.ItemStack");
+        Class<?> ItemStack = ReflectionUtil.getNMSClass("ItemStack");
 
         // get the entity player
         Object craftPlayer = CraftPlayer.cast(player);
@@ -20,18 +23,16 @@ public class NMS_v1_17_R1 implements NMSBase {
 
         // get container as EnchantMenu
         Object container = CraftInventoryView.cast(view);
-        Object enchantmentMenu = ReflectionUtil.getHandle(container);
+        Object containerEnchantTable = ReflectionUtil.getHandle(container);
 
         // change the enchantment seed
         ReflectionUtil.invokeMethod(entityPlayer, "enchantDone", new Class[]{ItemStack, int.class}, new Object[]{null, cost});
 
-        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "cl");
+        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "bZ");
 
-        // change enchantment seed on enchant menu data slot
-        Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("q"); // enchantSlots data slot/container property
+        // change enchantment seed on ContainerEnchantTable class
+        Field enchantmentSeedField = containerEnchantTable.getClass().getDeclaredField("f"); // seed property
         enchantmentSeedField.setAccessible(true);
-        Object dataSlot = enchantmentSeedField.get(enchantmentMenu);
-
-        ReflectionUtil.invokeMethod(dataSlot, "set", new Class[]{int.class}, new Object[]{newEnchantmentSeed});
+        enchantmentSeedField.set(containerEnchantTable, newEnchantmentSeed);
     }
 }

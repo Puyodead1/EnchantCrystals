@@ -6,10 +6,7 @@ import me.puyodead.enchantcrystals.Events.AnvilPrepareEvent;
 import me.puyodead.enchantcrystals.Events.CrystalUseEvent;
 import me.puyodead.enchantcrystals.Events.ItemEnchantEvent;
 import me.puyodead.enchantcrystals.Events.OpenInventoryEvent;
-import me.puyodead.enchantcrystals.NMS.NMSBase;
-import me.puyodead.enchantcrystals.NMS.NMS_v1_16;
-import me.puyodead.enchantcrystals.NMS.NMS_v1_17_R1;
-import me.puyodead.enchantcrystals.NMS.Version;
+import me.puyodead.enchantcrystals.NMS.*;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,13 +30,25 @@ public final class EnchantCrystals extends JavaPlugin {
         }
 
         switch (Version.getCurrentVersion()) {
-            case v1_17_R1:
-                nms = new NMS_v1_17_R1();
+            case v1_12_R1:
+                nms = new NMS_v1_12_R1();
+                break;
+            case v1_13_R2:
+                nms = new NMS_v1_13_R2();
+                break;
+            case v1_14_R1:
+                nms = new NMS_v1_14_R1();
+                break;
+            case v1_15_R1:
+                nms = new NMS_v1_15_R1();
                 break;
             case v1_16_R1:
             case v1_16_R2:
             case v1_16_R3:
                 nms = new NMS_v1_16();
+                break;
+            case v1_17_R1:
+                nms = new NMS_v1_17_R1();
                 break;
         }
 

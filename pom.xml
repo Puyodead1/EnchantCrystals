@@ -34,6 +34,12 @@
     </repositories>
 
     <dependencies>
+        <!--        <dependency>-->
+        <!--            <groupId>org.spigotmc</groupId>-->
+        <!--            <artifactId>spigot-api</artifactId>-->
+        <!--            <version>1.12.2-R0.1-SNAPSHOT</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -116,13 +122,13 @@
                                 <copy file="target/${project.name}-${project.version}.jar"
                                       toFile="C:\Users\23562\Desktop\Plugin Test Server\1.16.5\plugins\${project.name}-${project.version}.jar"/>
                                 <copy file="target/${project.name}-${project.version}.jar"
-                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.16.4\plugins\${project.name}-${project.version}.jar"/>
+                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.15.2\plugins\${project.name}-${project.version}.jar"/>
                                 <copy file="target/${project.name}-${project.version}.jar"
-                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.16.3\plugins\${project.name}-${project.version}.jar"/>
+                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.14.4\plugins\${project.name}-${project.version}.jar"/>
                                 <copy file="target/${project.name}-${project.version}.jar"
-                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.16.2\plugins\${project.name}-${project.version}.jar"/>
+                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.13.2\plugins\${project.name}-${project.version}.jar"/>
                                 <copy file="target/${project.name}-${project.version}.jar"
-                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.16.1\plugins\${project.name}-${project.version}.jar"/>
+                                      toFile="C:\Users\23562\Desktop\Plugin Test Server\1.12.2\plugins\${project.name}-${project.version}.jar"/>
                             </target>
                         </configuration>
                         <goals>

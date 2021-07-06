@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * 1.16.4-1.16.5
+ * 1.15-1.16
  */
 public class NMS_v1_16 implements NMSBase {
 
@@ -31,7 +31,7 @@ public class NMS_v1_16 implements NMSBase {
         Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "bG");
 
         // change enchantment seed on enchant menu container property
-        Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("i"); // container property
+        Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("i"); // enchantSlots container property
         enchantmentSeedField.setAccessible(true);
         Object dataSlot = enchantmentSeedField.get(enchantmentMenu);
 
