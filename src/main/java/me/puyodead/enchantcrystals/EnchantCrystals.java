@@ -1,12 +1,12 @@
 package me.puyodead.enchantcrystals;
 
-import me.puyodead.enchantcrystals.Commands.EnchantCrystalsCommand;
-import me.puyodead.enchantcrystals.Commands.TabCompletion;
-import me.puyodead.enchantcrystals.Events.AnvilPrepareEvent;
-import me.puyodead.enchantcrystals.Events.CrystalUseEvent;
-import me.puyodead.enchantcrystals.Events.ItemEnchantEvent;
-import me.puyodead.enchantcrystals.Events.OpenInventoryEvent;
-import me.puyodead.enchantcrystals.NMS.*;
+import me.puyodead.enchantcrystals.commands.EnchantCrystalsCommand;
+import me.puyodead.enchantcrystals.commands.TabCompletion;
+import me.puyodead.enchantcrystals.events.AnvilPrepareEvent;
+import me.puyodead.enchantcrystals.events.CrystalUseEvent;
+import me.puyodead.enchantcrystals.events.ItemEnchantEvent;
+import me.puyodead.enchantcrystals.events.OpenInventoryEvent;
+import me.puyodead.enchantcrystals.nms.*;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -83,10 +83,10 @@ public final class EnchantCrystals extends JavaPlugin {
     public void initEvents() {
         final long STARTED = System.currentTimeMillis();
 
-        getServer().getPluginManager().registerEvents(new CrystalUseEvent(this), this);
+        getServer().getPluginManager().registerEvents(new CrystalUseEvent(), this);
         getServer().getPluginManager().registerEvents(new ItemEnchantEvent(this), this);
         getServer().getPluginManager().registerEvents(new OpenInventoryEvent(this), this);
-        getServer().getPluginManager().registerEvents(new AnvilPrepareEvent(this), this);
+        getServer().getPluginManager().registerEvents(new AnvilPrepareEvent(), this);
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Events &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
     }

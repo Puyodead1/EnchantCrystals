@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.Events;
+package me.puyodead.enchantcrystals.events;
 
 import me.puyodead.enchantcrystals.Crystal;
 import me.puyodead.enchantcrystals.EnchantCrystals;
@@ -16,12 +16,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import java.util.Map;
 
 public class OpenInventoryEvent implements Listener {
-
-    private EnchantCrystals plugin;
-
-    public OpenInventoryEvent(EnchantCrystals plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler
     /**

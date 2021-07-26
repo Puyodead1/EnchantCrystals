@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.Commands;
+package me.puyodead.enchantcrystals.commands;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;

@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.NMS;
+package me.puyodead.enchantcrystals.nms;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
@@ -6,10 +6,7 @@ import org.bukkit.inventory.InventoryView;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * 1.15-1.16
- */
-public class NMS_v1_16 implements NMSBase {
+public class NMS_v1_14_R1 implements NMSBase {
 
     @Override
     public void onEnchantmentPerformed(Player player, int cost, InventoryView view) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
@@ -28,7 +25,7 @@ public class NMS_v1_16 implements NMSBase {
         // change the enchantment seed
         ReflectionUtil.invokeMethod(entityPlayer, "enchantDone", new Class[]{ItemStack, int.class}, new Object[]{null, cost});
 
-        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "bG");
+        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "bR");
 
         // change enchantment seed on enchant menu container property
         Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("i"); // enchantSlots container property

@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.Commands;
+package me.puyodead.enchantcrystals.commands;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.puyodead.enchantcrystals.Crystal;
@@ -68,15 +68,17 @@ public class EnchantCrystalsCommand implements CommandExecutor {
                     }
                     return true;
                 case "give":
-                    return processGiveCommand(player, cmd, argss);
+                    return processGiveCommand(player, argss);
                 case "add":
-                    return processAddCommand(player, cmd, argss);
+                    return processAddCommand(player, argss);
+                default:
+                    break;
             }
         }
         return false;
     }
 
-    private boolean processGiveCommand(Player player, Command cmd, List<String> args) {
+    private boolean processGiveCommand(Player player, List<String> args) {
         final int l = args.size();
 
         if (l == 0) {
@@ -111,7 +113,7 @@ public class EnchantCrystalsCommand implements CommandExecutor {
         return false;
     }
 
-    private boolean processAddCommand(Player player, Command cmd, List<String> args) {
+    private boolean processAddCommand(Player player, List<String> args) {
         final int l = args.size();
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
         final int slot = player.getInventory().getHeldItemSlot();

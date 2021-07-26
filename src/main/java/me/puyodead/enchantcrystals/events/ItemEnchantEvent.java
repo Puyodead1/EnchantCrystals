@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.Events;
+package me.puyodead.enchantcrystals.events;
 
 import me.puyodead.enchantcrystals.Crystal;
 import me.puyodead.enchantcrystals.EnchantCrystals;
@@ -61,7 +61,7 @@ public class ItemEnchantEvent implements Listener {
 
         // play enchantment sound
         e.getEnchanter().getWorld().playSound(e.getEnchanter().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 1.0f);
-        
+
         try {
             final int cost = e.getEnchanter().getGameMode().equals(GameMode.CREATIVE) ? 0 : e.getExpLevelCost();
             plugin.getNMS().onEnchantmentPerformed(e.getEnchanter(), cost, e.getView());

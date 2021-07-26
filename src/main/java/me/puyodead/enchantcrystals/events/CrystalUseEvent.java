@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.Events;
+package me.puyodead.enchantcrystals.events;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.puyodead.enchantcrystals.EnchantCrystals;
@@ -20,14 +20,10 @@ import java.util.Objects;
 
 public class CrystalUseEvent implements Listener {
 
-    private EnchantCrystals plugin;
-
-    public CrystalUseEvent(EnchantCrystals plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
-    public void CrystalUse(InventoryClickEvent e) {
+    // TODO: Fix NPath complexity
+    // TODO: Fix long length
+    public void crystalUse(InventoryClickEvent e) {
         e.setCancelled(true);
         final Player player = (Player) e.getWhoClicked();
         final Inventory inventory = e.getClickedInventory();

@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.NMS;
+package me.puyodead.enchantcrystals.nms;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
@@ -6,10 +6,7 @@ import org.bukkit.inventory.InventoryView;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * 1.14
- */
-public class NMS_v1_12_R1 implements NMSBase {
+public class NMS_v1_16 implements NMSBase {
 
     @Override
     public void onEnchantmentPerformed(Player player, int cost, InventoryView view) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
@@ -23,16 +20,18 @@ public class NMS_v1_12_R1 implements NMSBase {
 
         // get container as EnchantMenu
         Object container = CraftInventoryView.cast(view);
-        Object containerEnchantTable = ReflectionUtil.getHandle(container);
+        Object enchantmentMenu = ReflectionUtil.getHandle(container);
 
         // change the enchantment seed
         ReflectionUtil.invokeMethod(entityPlayer, "enchantDone", new Class[]{ItemStack, int.class}, new Object[]{null, cost});
 
-        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "bS");
+        Object newEnchantmentSeed = ReflectionUtil.getField(entityPlayer, "bG");
 
-        // change enchantment seed on ContainerEnchantTable class
-        Field enchantmentSeedField = containerEnchantTable.getClass().getDeclaredField("f"); // seed property
+        // change enchantment seed on enchant menu container property
+        Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("i"); // enchantSlots container property
         enchantmentSeedField.setAccessible(true);
-        enchantmentSeedField.set(containerEnchantTable, newEnchantmentSeed);
+        Object dataSlot = enchantmentSeedField.get(enchantmentMenu);
+
+        ReflectionUtil.invokeMethod(dataSlot, "set", new Class[]{int.class}, new Object[]{newEnchantmentSeed});
     }
 }

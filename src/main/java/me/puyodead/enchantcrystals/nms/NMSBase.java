@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.NMS;
+package me.puyodead.enchantcrystals.nms;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
