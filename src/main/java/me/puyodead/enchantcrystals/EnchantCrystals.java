@@ -85,7 +85,7 @@ public final class EnchantCrystals extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new CrystalUseEvent(), this);
         getServer().getPluginManager().registerEvents(new ItemEnchantEvent(this), this);
-        getServer().getPluginManager().registerEvents(new OpenInventoryEvent(this), this);
+        getServer().getPluginManager().registerEvents(new OpenInventoryEvent(), this);
         getServer().getPluginManager().registerEvents(new AnvilPrepareEvent(), this);
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bLoaded Events &e(took " + (System.currentTimeMillis() - STARTED) + "ms)");
