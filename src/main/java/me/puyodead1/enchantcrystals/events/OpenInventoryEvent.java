@@ -1,7 +1,7 @@
-package me.puyodead.enchantcrystals.events;
+package me.puyodead1.enchantcrystals.events;
 
-import me.puyodead.enchantcrystals.Crystal;
-import me.puyodead.enchantcrystals.EnchantCrystals;
+import me.puyodead1.enchantcrystals.Crystal;
+import me.puyodead1.enchantcrystals.EnchantCrystals;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;

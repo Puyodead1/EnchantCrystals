@@ -1,9 +1,9 @@
-package me.puyodead.enchantcrystals.commands;
+package me.puyodead1.enchantcrystals.commands;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.puyodead.enchantcrystals.Crystal;
-import me.puyodead.enchantcrystals.EnchantCrystals;
-import me.puyodead.enchantcrystals.EnchantCrystalsUtils;
+import me.puyodead1.enchantcrystals.Crystal;
+import me.puyodead1.enchantcrystals.EnchantCrystals;
+import me.puyodead1.enchantcrystals.EnchantCrystalsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

@@ -1,6 +1,6 @@
 name: EnchantCrystals
 version: ${project.version}
-main: me.puyodead.enchantcrystals.EnchantCrystals
+main: me.puyodead1.enchantcrystals.EnchantCrystals
 author: Puyodead1
 api-version: 1.13
 commands:

@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals;
+package me.puyodead1.enchantcrystals;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TranslatableComponent;

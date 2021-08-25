@@ -1,12 +1,12 @@
-package me.puyodead.enchantcrystals;
+package me.puyodead1.enchantcrystals;
 
-import me.puyodead.enchantcrystals.commands.EnchantCrystalsCommand;
-import me.puyodead.enchantcrystals.commands.TabCompletion;
-import me.puyodead.enchantcrystals.events.AnvilPrepareEvent;
-import me.puyodead.enchantcrystals.events.CrystalUseEvent;
-import me.puyodead.enchantcrystals.events.ItemEnchantEvent;
-import me.puyodead.enchantcrystals.events.OpenInventoryEvent;
-import me.puyodead.enchantcrystals.nms.*;
+import me.puyodead1.enchantcrystals.commands.EnchantCrystalsCommand;
+import me.puyodead1.enchantcrystals.commands.TabCompletion;
+import me.puyodead1.enchantcrystals.events.AnvilPrepareEvent;
+import me.puyodead1.enchantcrystals.events.CrystalUseEvent;
+import me.puyodead1.enchantcrystals.events.ItemEnchantEvent;
+import me.puyodead1.enchantcrystals.events.OpenInventoryEvent;
+import me.puyodead1.enchantcrystals.nms.*;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,16 +23,13 @@ public final class EnchantCrystals extends JavaPlugin {
         plugin = this;
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&b=============================================================");
-        if (Version.getCurrentVersion().isOlder(Version.v1_8_R3)) {
+        if (Version.isOlder(Version.v1_8_R3)) {
             EnchantCrystalsUtils.sendConsole(PREFIX + "&cThis server is running 1.8.3 or older which is not supported, plugin will be disabled.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
         switch (Version.getCurrentVersion()) {
-            case v1_12_R1:
-                nms = new NMS_v1_12_R1();
-                break;
             case v1_13_R2:
                 nms = new NMS_v1_13_R2();
                 break;

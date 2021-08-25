@@ -1,4 +1,4 @@
-package me.puyodead.enchantcrystals.nms;
+package me.puyodead1.enchantcrystals.nms;
 
 import org.bukkit.Bukkit;
 

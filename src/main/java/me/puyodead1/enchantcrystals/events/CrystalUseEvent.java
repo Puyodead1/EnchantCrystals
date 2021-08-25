@@ -1,8 +1,8 @@
-package me.puyodead.enchantcrystals.events;
+package me.puyodead1.enchantcrystals.events;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.puyodead.enchantcrystals.EnchantCrystals;
-import me.puyodead.enchantcrystals.EnchantCrystalsUtils;
+import me.puyodead1.enchantcrystals.EnchantCrystals;
+import me.puyodead1.enchantcrystals.EnchantCrystalsUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
