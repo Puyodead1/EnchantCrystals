@@ -140,7 +140,6 @@ public class CrystalUseEvent implements Listener {
                     // check if the enchant conflicts with any of the existing enchants
                     if (currentEntry.getKey().conflictsWith(enchantment)) {
                         refuseConflict(player, enchantment, currentEntry);
-                        continue;
                     }
                 }
 
@@ -168,10 +167,6 @@ public class CrystalUseEvent implements Listener {
 
                 // remove a crystal if its a stack or just remove the crystal
                 apply(player, currentItem, clone, enchantment, clone.getEnchantmentLevel(enchantment));
-            }
-
-            if (!clone.getEnchantments().isEmpty()) {
-                player.getInventory().addItem(clone);
             }
 
             if (clone.getEnchantments().size() == enchantAmount) {
