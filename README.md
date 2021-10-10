@@ -9,6 +9,8 @@ Enchants can be Upgraded - ex: Knockback 2 would overwrite Knockback 1
 
 Works with all vanilla enchants!
 
+SpigotMC listing can be found at https://www.spigotmc.org/resources/enchantcrystals.75155/
+
 ## Showcase
 
 ![Crystal Example 1](https://i.imgur.com/QAJrvak.png) <br>
