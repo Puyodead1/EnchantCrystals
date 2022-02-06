@@ -24,41 +24,44 @@ public class CrystalUseEvent implements Listener {
     // TODO: Fix NPath complexity
     // TODO: Fix long length
     public void crystalUse(InventoryClickEvent e) {
-        e.setCancelled(true);
         final Player player = (Player) e.getWhoClicked();
         final Inventory inventory = e.getClickedInventory();
         // item to apply to
         final ItemStack currentItem = e.getCurrentItem();
-
         // crystal
         final ItemStack cursorItem = e.getCursor();
+        // crystal material
+        final Material crystalMaterial = Material.valueOf(EnchantCrystals.getPlugin().getConfig().getString("settings.item.material"));
 
-        // ensure that nothing is null, and that the items are not air, and that the cursorItem is only a nether star, also ignore stacking crystals
-        if (inventory == null || currentItem == null || cursorItem == null || currentItem.getType().equals(Material.AIR) || cursorItem.getType().equals(Material.AIR) || !cursorItem.getType().equals(Material.valueOf(EnchantCrystals.getPlugin().getConfig().getString("settings.item.material"))) || currentItem.getType().equals(Material.valueOf(EnchantCrystals.getPlugin().getConfig().getString("settings.item.material")))) {
-            e.setCancelled(false);
+        // null checks
+        if (Objects.isNull(inventory) || Objects.isNull(currentItem) || Objects.isNull(cursorItem)) {
             return;
         }
 
+        final ItemMeta cursorItemMeta = cursorItem.getItemMeta();
+
+        // ensure that the items are not air, and that the cursorItem is only a nether star, also ignore stacking crystals
+        if (Objects.isNull(cursorItemMeta) || currentItem.getType().equals(Material.AIR) || cursorItem.getType().equals(Material.AIR) || !cursorItem.getType().equals(crystalMaterial) || currentItem.getType().equals(crystalMaterial)) {
+            return;
+        }
+
+        // create nbt item from the cursor item
         final NBTItem nbtCursorItem = new NBTItem(cursorItem);
 
+        // nbt item null check
         if (!EnchantCrystalsUtils.isCrystal(nbtCursorItem)) {
-            e.setCancelled(false);
             return;
         }
 
         if (player.getGameMode().equals(GameMode.CREATIVE)) {
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             EnchantCrystalsUtils.sendPlayer(player, EnchantCrystals.getPlugin().getConfig().getString("messages.creative_error"));
-            e.setCancelled(false);
             return;
         }
-
-        final ItemMeta cursorItemMeta = cursorItem.getItemMeta();
 
         if (!cursorItemMeta.hasEnchants()) {
             // crystal has no enchants on it, how did we get here?!
             EnchantCrystalsUtils.sendPlayer(player, "Crystal does not contain any enchants, Please report this to the developer and include how you managed to do this! x_x");
-            e.setCancelled(false);
             return;
         }
 
@@ -72,10 +75,9 @@ public class CrystalUseEvent implements Listener {
             final Map.Entry<Enchantment, Integer> entry = enchants.entrySet().iterator().next();
             final int cursorEnchantLevel = clone.getEnchantmentLevel(entry.getKey());
 
-            // check if the enchant can be applied to the item
+            // check if enchant can be applied to the item
             if (!entry.getKey().canEnchantItem(currentItem)) {
                 rejectInvalidItem(player, currentItem, entry.getKey());
-                e.setCancelled(false);
                 return;
             }
 
@@ -84,38 +86,40 @@ public class CrystalUseEvent implements Listener {
                 if (currentItem.containsEnchantment(entry.getKey()))
                     continue; // allow the same enchant for stacking
 
-                // check if the enchant conflicts with any of the existing enchants
+                // check if enchant conflicts with any of the existing enchants
                 if (currentEntry.getKey().conflictsWith(entry.getKey())) {
                     refuseConflict(player, entry.getKey(), currentEntry);
-                    e.setCancelled(false);
                     return;
                 }
             }
 
             // handle stacking
             if (currentItem.containsEnchantment(entry.getKey())) {
-                int currentEnchantLevel = currentItem.getEnchantmentLevel(entry.getKey());
-                int addedEnchantLevel = currentEnchantLevel + cursorEnchantLevel;
+                final int currentEnchantLevel = currentItem.getEnchantmentLevel(entry.getKey());
+                final int addedEnchantLevel = currentEnchantLevel + cursorEnchantLevel;
                 if (addedEnchantLevel > entry.getKey().getMaxLevel()) {
-                    // its the same enchant but it has a higher level, apply it
+                    // it's the same enchant, and it has a higher level, but it would exceed the enchants maximum, so we can't combine the levels and should just add the max
                     if (cursorEnchantLevel > currentEnchantLevel) {
+                        e.setCancelled(true);
                         applyReplace(player, currentItem, clone, entry.getKey(), cursorEnchantLevel);
                         cursorItem.setAmount(cursorItem.getAmount() - 1);
                         return;
                     }
 
-                    // the enchant level exceeds the enchants max and the level is not higher then the current applied level, exit
+                    // enchant level exceeds the enchants max and the level is not higher than the current applied level, exit
+                    e.setCancelled(true);
                     rejectExceed(player, entry.getKey());
-                    e.setCancelled(false);
                     return;
                 }
 
-                // combine the enchant levels
+                // combine enchant levels
+                e.setCancelled(true);
                 applyUpgrade(player, currentItem, clone, entry.getKey(), currentEnchantLevel, addedEnchantLevel);
                 cursorItem.setAmount(cursorItem.getAmount() - 1);
                 return;
             }
 
+            e.setCancelled(true);
             apply(player, currentItem, clone, entry.getKey(), cursorEnchantLevel);
             cursorItem.setAmount(cursorItem.getAmount() - 1);
         } else {
@@ -126,8 +130,9 @@ public class CrystalUseEvent implements Listener {
 
             // handle a crystal with more than one enchantment
             for (final Enchantment enchantment : clone.getEnchantments().keySet()) {
-                // check if the enchant can be applied to the item
+                // check if enchant can be applied to the item
                 if (!enchantment.canEnchantItem(currentItem)) {
+                    e.setCancelled(true);
                     rejectInvalidItem(player, currentItem, enchantment);
                     continue;
                 }
@@ -137,8 +142,9 @@ public class CrystalUseEvent implements Listener {
                     if (currentItem.containsEnchantment(enchantment)) {
                         continue; // allow the same enchant for stacking
                     }
-                    // check if the enchant conflicts with any of the existing enchants
+                    // check if enchant conflicts with any of the existing enchants
                     if (currentEntry.getKey().conflictsWith(enchantment)) {
+                        e.setCancelled(true);
                         refuseConflict(player, enchantment, currentEntry);
                     }
                 }
@@ -151,28 +157,30 @@ public class CrystalUseEvent implements Listener {
                     if (addedEnchantLevel > enchantment.getMaxLevel()) {
                         // its the same enchant but it has a higher level, apply it
                         if (clone.getEnchantmentLevel(enchantment) > currentEnchantLevel) {
+                            e.setCancelled(true);
                             applyReplace(player, currentItem, clone, enchantment, clone.getEnchantmentLevel(enchantment));
                             continue;
                         }
 
                         // the enchant level exceeds the enchants max and the level is not higher then the current applied level, exit
+                        e.setCancelled(true);
                         rejectExceed(player, enchantment);
                         continue;
                     }
 
-                    // combine the enchant levels
+                    // combine enchant levels
+                    e.setCancelled(true);
                     applyUpgrade(player, currentItem, clone, enchantment, currentEnchantLevel, addedEnchantLevel);
                     continue;
                 }
 
-                // remove a crystal if its a stack or just remove the crystal
+                // remove a crystal if it's a stack or just remove the crystal
+                e.setCancelled(true);
                 apply(player, currentItem, clone, enchantment, clone.getEnchantmentLevel(enchantment));
             }
 
-            if (clone.getEnchantments().size() == enchantAmount) {
-                // no enchants were added to the item
-                e.setCancelled(false);
-            } else {
+            if (clone.getEnchantments().size() != enchantAmount) {
+                e.setCancelled(true);
                 cursorItem.setAmount(cursorItem.getAmount() - 1);
             }
         }
@@ -180,11 +188,11 @@ public class CrystalUseEvent implements Listener {
 
     private void rejectInvalidItem(final Player player, final ItemStack currentItem, final Enchantment enchantment) {
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceInvalid(EnchantCrystals.getPlugin().getConfig().getString("messages.invalid_item"), enchantment, currentItem)));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceInvalid(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.invalid_item")), enchantment, currentItem)));
     }
 
     private void rejectExceed(final Player player, final Enchantment enchantment) {
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceExceed(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_max_exceed"), enchantment)));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.colorize(EnchantCrystalsUtils.replaceExceed(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_max_exceed")), enchantment)));
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
     }
 
@@ -197,7 +205,7 @@ public class CrystalUseEvent implements Listener {
         currentItem.addEnchantment(enchantment, cursorEnchantLevel);
         cursorItem.removeEnchantment(enchantment);
 
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_success"), enchantment, cursorEnchantLevel, currentItem));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_success")), enchantment, cursorEnchantLevel, currentItem));
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
     }
 
@@ -206,7 +214,7 @@ public class CrystalUseEvent implements Listener {
         cursorItem.removeEnchantment(enchantment);
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replaceUpgraded(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_upgraded"), enchantment, currentEnchantLevel, addedEnchantLevel));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replaceUpgraded(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_upgraded")), enchantment, currentEnchantLevel, addedEnchantLevel));
     }
 
     private void applyReplace(final Player player, final ItemStack currentItem, final ItemStack cursorItem, final Enchantment enchantment, final int cursorEnchantLevel) {
@@ -214,6 +222,6 @@ public class CrystalUseEvent implements Listener {
         cursorItem.removeEnchantment(enchantment);
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
-        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_success"), enchantment, cursorEnchantLevel, currentItem));
+        EnchantCrystalsUtils.sendPlayer(player, EnchantCrystalsUtils.replace(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("messages.enchantment_success")), enchantment, cursorEnchantLevel, currentItem));
     }
 }
