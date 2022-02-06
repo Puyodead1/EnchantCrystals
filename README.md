@@ -5,7 +5,7 @@ by right-clicking on an item. Crystals can be obtained in an enchanting table, o
 are configurable). This plugin is also fully customizable.
 
 Enchants can be Stacked/Combined - ex: Knockback 1 + Knockback 1 = Knockback 2<br>
-Enchants can be Upgraded - ex: Knockback 2 would overwrite Knockback 1
+Enchants can be Upgraded - ex: Knockback 2 would overwrite Knockback 1 (because knockback 2 is the max so we can't combine them)
 
 Works with all vanilla enchants!
 
