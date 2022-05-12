@@ -45,8 +45,8 @@ public class ItemEnchantEvent implements Listener {
         }
 
         if (EnchantCrystals.getPlugin().getConfig().getBoolean("settings.enchanting_tables.require_lapis")) {
-            // take lapis
-            secondary.setAmount(secondary.getAmount() - e.getExpLevelCost());
+            // take lapis by looking at the button index
+            secondary.setAmount(secondary.getAmount() - (e.whichButton() + 1));
         }
 
         // take the book

@@ -15,13 +15,14 @@ public enum Version {
     v1_15_R1(1151),
     v1_16_R1(1161), v1_16_R2(1162), v1_16_R3(1163),
     v1_17_R1(1171),
+    v1_18_R1(1181), v1_18_R2(1182),
     TOO_NEW(-2);
 
     private static Version currentVersion;
     private static Version latest;
-    private int versionInteger;
+    private final int versionInteger;
 
-    private Version(int versionInteger) {
+    Version(int versionInteger) {
         this.versionInteger = versionInteger;
     }
 
@@ -38,9 +39,11 @@ public enum Version {
                     break;
                 }
             }
-            if (v > Version.getLatestVersion().getVersionInteger()) {
-                currentVersion = Version.getLatestVersion();
-            }
+
+//            if (v > Version.getLatestVersion().getVersionInteger()) {
+//                currentVersion = Version.getLatestVersion();
+//            }
+
             if (currentVersion == null) {
                 currentVersion = Version.TOO_NEW;
             }
@@ -64,7 +67,6 @@ public enum Version {
             return v;
         } else {
             return latest;
-
         }
     }
 

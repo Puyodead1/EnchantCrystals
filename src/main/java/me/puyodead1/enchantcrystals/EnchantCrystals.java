@@ -15,7 +15,7 @@ import java.util.Objects;
 public final class EnchantCrystals extends JavaPlugin {
 
     private static EnchantCrystals plugin;
-    private static final String PREFIX = "&7[&dEnchantCrystals&7] ";
+    public static final String PREFIX = "&7[&dEnchantCrystals&7] ";
     private NMSBase nms;
 
     @Override
@@ -23,8 +23,17 @@ public final class EnchantCrystals extends JavaPlugin {
         plugin = this;
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&b=============================================================");
+
+        // disable plugin if the server is running anything older than 1.8.3
         if (Version.isOlder(Version.v1_8_R3)) {
             EnchantCrystalsUtils.sendConsole(PREFIX + "&cThis server is running 1.8.3 or older which is not supported, plugin will be disabled.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        // disable plugin if the server is running a newer version
+        if(Version.getCurrentVersion() == Version.TOO_NEW) {
+            EnchantCrystalsUtils.sendConsole(PREFIX + "&cThis server is running a newer version of Minecraft, the latest supported version is " + Version.getLatestVersion() + ", plugin will be disabled. Please file an issue on GitHub.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -46,6 +55,10 @@ public final class EnchantCrystals extends JavaPlugin {
                 break;
             case v1_17_R1:
                 nms = new NMS_v1_17_R1();
+                break;
+            case v1_18_R1:
+            case v1_18_R2:
+                nms = new NMS_v1_18();
                 break;
         }
 

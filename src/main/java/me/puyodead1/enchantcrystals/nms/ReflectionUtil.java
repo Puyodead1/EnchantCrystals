@@ -13,6 +13,12 @@ public class ReflectionUtil {
         return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     }
 
+    /**
+     * Gets a craftbukkit class
+     * @param name name of the class
+     * @return Class
+     * @throws ClassNotFoundException
+     */
     public static Class<?> getOBCClass(String name) throws ClassNotFoundException {
         return Class.forName("org.bukkit.craftbukkit." + getVersion() + "." + name);
     }
