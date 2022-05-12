@@ -17,12 +17,14 @@ public final class EnchantCrystals extends JavaPlugin {
     private static EnchantCrystals plugin;
     public static final String PREFIX = "&7[&dEnchantCrystals&7] ";
     private NMSBase nms;
+    private Metrics metrics;
 
     @Override
     public void onEnable() {
         plugin = this;
+        metrics = new Metrics(this, 15180);
 
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&b=============================================================");
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&d=============================================================");
 
         // disable plugin if the server is running anything older than 1.8.3
         if (Version.isOlder(Version.v1_8_R3)) {
@@ -71,8 +73,8 @@ public final class EnchantCrystals extends JavaPlugin {
         EnchantCrystalsUtils.sendConsole(PREFIX + "&b" + this.getName() + " Version: &e" + Objects.requireNonNull(getServer().getPluginManager().getPlugin(this.getDescription().getName())).getDescription().getVersion());
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bMinecraft Version: &e" + getServer().getVersion());
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bBukkit Version: &e" + getServer().getBukkitVersion());
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&bNMS Version: &e" + Version.getCurrentVersion().getVersionInteger());
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&b=============================================================");
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&bNMS Version: &e" + Version.getCurrentVersion().toString() + " (" + Version.getCurrentVersion().getVersionInteger() + ")");
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&d=============================================================");
     }
 
     @Override
