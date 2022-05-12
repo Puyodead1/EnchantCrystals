@@ -16,15 +16,11 @@ public class NMS_v1_18 implements NMSBase {
 
         // get the entity player
         Object craftPlayer = CraftPlayer.cast(player);
-        System.out.println(craftPlayer);
         Object entityPlayer = ReflectionUtil.getHandle(craftPlayer);
-        System.out.println(entityPlayer);
 
         // get container as EnchantMenu
         Object container = CraftInventoryView.cast(view);
-        System.out.println(container);
         Object enchantmentMenu = ReflectionUtil.getHandle(container);
-        System.out.println(enchantmentMenu);
 
         // change the enchantment seed
         // onEnchantmentPerformed on Player in net.minecraft.world.entity.player
@@ -37,11 +33,10 @@ public class NMS_v1_18 implements NMSBase {
         // change enchantment seed on enchant menu data slot
         // enchantmentSeed on net.minecraft.world.inventory.ContainerEnchantTable
         Field enchantmentSeedField = enchantmentMenu.getClass().getDeclaredField("q");
-        System.out.println(enchantmentSeedField);
         enchantmentSeedField.setAccessible(true);
+		
         // DataSlot aka ContainerProperty
         Object dataSlot = enchantmentSeedField.get(enchantmentMenu);
-        System.out.println(dataSlot);
 
         // Calls the set method on net.minecraft.world.inventory.ContainerProperty
         ReflectionUtil.invokeMethod(dataSlot, "a", new Class[]{int.class}, new Object[]{newEnchantmentSeed});
