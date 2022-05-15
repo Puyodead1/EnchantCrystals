@@ -101,12 +101,12 @@ public class EnchantCrystalsUtils {
                 .replace("%ENCHANTMENT_NAME%", translateEnchantmentName(enchantment));
     }
 
-    public static String replace(final String string, final Enchantment enchantment, final int level, final int amount, final Player player) {
+    public static String replace(final String string, final Enchantment enchantment, final int level, final int amount, final CommandSender sender) {
         return string
                 .replace("%ENCHANTMENT_NAME%", translateEnchantmentName(enchantment))
                 .replace("%CRYSTAL_DISPLAY_NAME%", Objects.requireNonNull(Objects.requireNonNull(EnchantCrystals.getPlugin().getConfig().getString("settings.item.display_name")).replace("%ENCHANTMENT_NAME%", translateEnchantmentName(enchantment))))
                 .replace("%ENCHANTMENT_LEVEL%", translateEnchantmentLevel(level))
-                .replace("%PLAYER_NAME%", player.getName())
+                .replace("%PLAYER_NAME%", sender.getName())
                 .replace("%CRYSTAL_AMOUNT%", String.valueOf(amount));
     }
 

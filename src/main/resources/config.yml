@@ -26,7 +26,7 @@ messages:
   enchantment_upgraded: "&aSuccessfully upgraded &e%ENCHANTMENT_NAME% &afrom level &e%ENCHANTMENT_LEVEL_OLD% &ato level &e%ENCHANTMENT_LEVEL_NEW%&a!"
   invalid_item: "&e%ENCHANTMENT_NAME% &ccannot be applied to &e%ITEM_DISPLAY_NAME%!"
   invalid_player: "&cInvalid player specified!"
-  invalid_enchantment: "&cInvalid Enchantment! Check &e/gc enchants &cfor a list of valid enchantments."
+  invalid_enchantment: "&cInvalid Enchantment! Check &e/ecr enchants &cfor a list of valid enchantments."
   missing_permission: "&cYou do not have permission to run that command!"
   crystal_given: "&aAdded &ex%CRYSTAL_AMOUNT% %ENCHANTMENT_NAME% &6Enchantment Crystal &ato your inventory!"
   crystal_given_to_player: "&a%PLAYER_NAME% has been given &ex%CRYSTAL_AMOUNT% %ENCHANTMENT_NAME%&a!"
