@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 
 public enum Version {
     TOO_OLD(-1),
+    TOO_NEW(-2),
     v1_7_R1(171), v1_7_R2(172), v1_7_R3(173), v1_7_R4(174),
     v1_8_R1(181), v1_8_R2(182), v1_8_R3(183),
     v1_9_R1(191), v1_9_R2(192),
@@ -16,7 +17,7 @@ public enum Version {
     v1_16_R1(1161), v1_16_R2(1162), v1_16_R3(1163),
     v1_17_R1(1171),
     v1_18_R1(1181), v1_18_R2(1182),
-    TOO_NEW(-2);
+    v1_19_R1(1191);
 
     private static Version currentVersion;
     private static Version latest;

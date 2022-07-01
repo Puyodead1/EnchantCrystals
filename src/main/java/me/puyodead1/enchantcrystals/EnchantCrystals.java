@@ -30,7 +30,7 @@ public final class EnchantCrystals extends JavaPlugin {
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bMinecraft Version: &e" + getServer().getVersion());
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bBukkit Version: &e" + getServer().getBukkitVersion());
         EnchantCrystalsUtils.sendConsole(PREFIX + "&bNMS Version: &e" + Version.getNMSVersionString() + " (" + Version.getNMSVersionInt() + ")");
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&d=============================================================");
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&d=========================");
 
         // disable plugin if the server is running a newer version
         if (Version.getCurrentVersion() == Version.TOO_NEW) {
@@ -66,6 +66,7 @@ public final class EnchantCrystals extends JavaPlugin {
                 break;
             case v1_18_R1:
             case v1_18_R2:
+            case v1_19_R1:
                 nms = new NMS_v1_18();
                 break;
         }
@@ -73,6 +74,8 @@ public final class EnchantCrystals extends JavaPlugin {
         initConfig();
         initEvents();
         initCommands();
+
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&d=============================================================");
     }
 
     @Override
