@@ -26,13 +26,22 @@ public enum Version {
         this.versionInteger = versionInteger;
     }
 
+    public static String getNMSVersionString() {
+        String v = Bukkit.getServer().getClass().getPackage().getName();
+        return v.substring(v.lastIndexOf('.') + 1);
+    }
+
+    public static int getNMSVersionInt() {
+        String ver = getNMSVersionString();
+        return Integer.parseInt(ver.replace("_", "").replace("R", "").replace("v", ""));
+    }
+
     /**
      * @return Get the server's Minecraft version.
      */
     public static Version getCurrentVersion() {
         if (currentVersion == null) {
-            String ver = Bukkit.getServer().getClass().getPackage().getName();
-            int v = Integer.parseInt(ver.substring(ver.lastIndexOf('.') + 1).replace("_", "").replace("R", "").replace("v", ""));
+            int v = getNMSVersionInt();
             for (Version version : values()) {
                 if (version.getVersionInteger() == v) {
                     currentVersion = version;

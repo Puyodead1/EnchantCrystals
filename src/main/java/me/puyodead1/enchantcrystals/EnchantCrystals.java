@@ -25,17 +25,23 @@ public final class EnchantCrystals extends JavaPlugin {
         metrics = new Metrics(this, 15180);
 
         EnchantCrystalsUtils.sendConsole(PREFIX + "&d=============================================================");
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&bAuthor: &ePuyodead1");
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&b" + this.getName() + " Version: &e" + Objects.requireNonNull(getServer().getPluginManager().getPlugin(this.getDescription().getName())).getDescription().getVersion());
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&bMinecraft Version: &e" + getServer().getVersion());
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&bBukkit Version: &e" + getServer().getBukkitVersion());
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&bNMS Version: &e" + Version.getNMSVersionString() + " (" + Version.getNMSVersionInt() + ")");
+        EnchantCrystalsUtils.sendConsole(PREFIX + "&d=============================================================");
 
-        // disable plugin if the server is running anything older than 1.8.3
-        if (Version.isOlder(Version.v1_8_R3)) {
-            EnchantCrystalsUtils.sendConsole(PREFIX + "&cThis server is running 1.8.3 or older which is not supported, plugin will be disabled.");
+        // disable plugin if the server is running a newer version
+        if (Version.getCurrentVersion() == Version.TOO_NEW) {
+            EnchantCrystalsUtils.sendConsole(PREFIX + "&cThis server is running a newer version of Minecraft, the latest supported version is " + Version.getLatestVersion() + ", plugin will be disabled. Please file an issue on GitHub.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
-        // disable plugin if the server is running a newer version
-        if(Version.getCurrentVersion() == Version.TOO_NEW) {
-            EnchantCrystalsUtils.sendConsole(PREFIX + "&cThis server is running a newer version of Minecraft, the latest supported version is " + Version.getLatestVersion() + ", plugin will be disabled. Please file an issue on GitHub.");
+        // disable plugin if the server is running anything older than 1.8.3
+        if (Version.isOlder(Version.v1_8_R3)) {
+            EnchantCrystalsUtils.sendConsole(PREFIX + "&cThis server is running 1.8.3 or older which is not supported, plugin will be disabled.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -67,14 +73,6 @@ public final class EnchantCrystals extends JavaPlugin {
         initConfig();
         initEvents();
         initCommands();
-
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&d========================");
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&bAuthor: &ePuyodead1");
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&b" + this.getName() + " Version: &e" + Objects.requireNonNull(getServer().getPluginManager().getPlugin(this.getDescription().getName())).getDescription().getVersion());
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&bMinecraft Version: &e" + getServer().getVersion());
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&bBukkit Version: &e" + getServer().getBukkitVersion());
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&bNMS Version: &e" + Version.getCurrentVersion().toString() + " (" + Version.getCurrentVersion().getVersionInteger() + ")");
-        EnchantCrystalsUtils.sendConsole(PREFIX + "&d=============================================================");
     }
 
     @Override
