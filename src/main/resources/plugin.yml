@@ -1,0 +1,10 @@
+name: EnchantCrystals
+version: '${project.version}'
+main: me.puyodead1.enchantcrystals.EnchantCrystals
+api-version: 1.19
+softdepend: [ AdvancedEnchantments ]
+authors: [ Puyodead1 ]
+commands:
+  test:
+    description: test
+    usage: /test
