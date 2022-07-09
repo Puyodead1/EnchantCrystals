@@ -1,9 +1,8 @@
-package me.puyodead1.enchantcrystals.hooks.pluginhooks;
+package me.puyodead1.enchantcrystals.hooks.pluginhooks.advancedenchantments;
 
 import me.puyodead1.enchantcrystals.hooks.Enchantment;
 import net.advancedplugins.ae.api.AEAPI;
 import net.advancedplugins.ae.enchanthandler.enchantments.AdvancedEnchantment;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 public class AEEnchantment extends Enchantment {

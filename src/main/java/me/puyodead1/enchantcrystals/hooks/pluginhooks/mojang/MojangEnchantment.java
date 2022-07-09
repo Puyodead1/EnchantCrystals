@@ -1,4 +1,4 @@
-package me.puyodead1.enchantcrystals.hooks.pluginhooks;
+package me.puyodead1.enchantcrystals.hooks.pluginhooks.mojang;
 
 import me.puyodead1.enchantcrystals.hooks.Enchantment;
 import org.bukkit.inventory.ItemStack;

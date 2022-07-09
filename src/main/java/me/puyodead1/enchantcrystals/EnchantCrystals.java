@@ -3,8 +3,11 @@ package me.puyodead1.enchantcrystals;
 import me.puyodead1.enchantcrystals.commands.TestCommand;
 import me.puyodead1.enchantcrystals.hooks.Enchantment;
 import me.puyodead1.enchantcrystals.hooks.PluginHook;
-import me.puyodead1.enchantcrystals.hooks.pluginhooks.AEHook;
-import me.puyodead1.enchantcrystals.hooks.pluginhooks.MojangHook;
+import me.puyodead1.enchantcrystals.hooks.pluginhooks.EPluginHooks;
+import me.puyodead1.enchantcrystals.hooks.pluginhooks.advancedenchantments.AEHook;
+import me.puyodead1.enchantcrystals.hooks.pluginhooks.enchantmentsolution.ESHook;
+import me.puyodead1.enchantcrystals.hooks.pluginhooks.mojang.MojangHook;
+import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -88,10 +91,26 @@ public final class EnchantCrystals extends JavaPlugin {
     public void loadHooks() {
         final long STARTED = System.currentTimeMillis();
 
-        loadHook(AEHook.class);
+        // Vanilla enchants should always be loaded
         loadHook(MojangHook.class);
 
+        // Optional plugin hooks
+        tryLoadHook(EPluginHooks.ADVANCED_ENCHANTMENTS.toString(), AEHook.class);
+        tryLoadHook(EPluginHooks.ENCHANTMENT_SOLUTION.toString(), ESHook.class);
+
         sendConsole(PREFIX + String.format("&bLoaded &e%s &bHooks &e(took %s ms)", EnchantCrystals.hooks.size(), (System.currentTimeMillis() - STARTED)));
+    }
+
+    /**
+     * Checks if a plugin is loaded before trying to load the hook
+     * @param pluginName the plugin to check for
+     * @param clazz the class to load
+     */
+    public <T extends PluginHook> void tryLoadHook(final String pluginName, final Class<T> clazz)  {
+        if(!pluginName.isEmpty() && !Objects.isNull(Bukkit.getPluginManager().getPlugin(pluginName))) {
+            sendConsole(PREFIX + String.format("&bHooking plugin &e%s", pluginName));
+            loadHook(clazz);
+        }
     }
 
     /**

@@ -99,12 +99,7 @@
             <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api</artifactId>
-            <version>2.10.0</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        Hooks-->
         <dependency>
             <groupId>net.advancedplugins</groupId>
             <artifactId>ae</artifactId>
@@ -112,6 +107,26 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/AdvancedEnchantments-8.12.4.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.ctp</groupId>
+            <artifactId>enchantmentsolution</artifactId>
+            <version>2.5.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/EnchantmentSolution.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.ctp</groupId>
+            <artifactId>crashapi</artifactId>
+            <version>1.1.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/CrashAPI.jar</systemPath>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>de.tr7zw</groupId>-->
+<!--            <artifactId>item-nbt-api</artifactId>-->
+<!--            <version>2.10.0</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
