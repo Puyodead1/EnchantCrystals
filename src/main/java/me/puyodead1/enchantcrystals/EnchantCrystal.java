@@ -6,21 +6,30 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class EnchantCrystal {
     private final HashMap<Enchantment, Integer> enchantments;
-    private int amount;
+    private int amount = 1;
     private ItemStack itemStack;
     private Material material;
+
+    public EnchantCrystal() {
+        this.enchantments = new HashMap<>();
+
+        material = Material.matchMaterial(EnchantCrystals.getPlugin().getConfig().getString("item.material"));
+
+        if (Objects.isNull(material)) {
+            EnchantCrystals.getPlugin().getLogger().severe(String.format("Failed to load Crystal Material %s! Falling back to Nether Star."));
+            material = Material.NETHER_STAR;
+        }
+    }
 
     public EnchantCrystal(final Enchantment baseEnchantment, final int enchantLevel, final int amount) {
         this.enchantments = new HashMap<>();
         this.amount = amount;
-
-        // apply the base enchant
-        this.addEnchantment(baseEnchantment, enchantLevel);
 
         material = Material.matchMaterial(EnchantCrystals.getPlugin().getConfig().getString("item.material"));
 
@@ -29,33 +38,37 @@ public class EnchantCrystal {
             material = Material.NETHER_STAR;
         }
 
-        itemStack = new ItemStack(material);
-
-        // add item meta
-        final ItemMeta itemMeta = this.itemStack.getItemMeta();
-        final String itemDisplayName = EnchantCrystals.getPlugin().getConfig().getString("item.display_name");
-        itemMeta.setDisplayName(Utils.colorize(Utils.replaceDisplayName(itemDisplayName, enchantments.size())));
-
-        this.itemStack.setItemMeta(itemMeta);
-
-        updateItemStack();
+        addEnchantment(baseEnchantment, enchantLevel);
     }
 
     public void addEnchantment(final Enchantment e, final int level) {
-        this.enchantments.put(e, level);
+        enchantments.put(e, level);
+        updateItemStack();
     }
 
-    public EnchantCrystal updateItemStack() {
-        // update ItemStack
-        ItemStack tmpItem = this.itemStack;
-        for(final Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
-            // apply an enchantment to the ItemStack
-            tmpItem = entry.getKey().apply(itemStack, entry.getValue());
+    public void addEnchantments(final HashMap<Enchantment, Integer> enchants) {
+        enchantments.putAll(enchants);
+        updateItemStack();
+    }
+
+    public void updateItemStack() {
+        // create new itemstack
+        itemStack = new ItemStack(material);
+
+        // set display name
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+        final String itemDisplayName = EnchantCrystals.getPlugin().getConfig().getString("item.display_name");
+        itemMeta.setDisplayName(Utils.colorize(Utils.replaceDisplayName(itemDisplayName, enchantments.size())));
+
+        // set the meta
+        itemStack.setItemMeta(itemMeta);
+
+        // add enchants
+        for(final Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+            System.out.println(entry.getKey().getKey());
+            // apply an enchantment to the ItemStack, use unsafe only for the crystal item
+            itemStack = entry.getKey().applyUnsafe(itemStack, entry.getValue());
         }
-
-        this.itemStack = tmpItem;
-
-        return this;
     }
 
     public HashMap<Enchantment, Integer> getEnchantments() {

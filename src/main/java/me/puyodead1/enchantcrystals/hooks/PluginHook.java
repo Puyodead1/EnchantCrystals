@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class PluginHook {
+public abstract class PluginHook implements IPluginHook {
     private final String name;
     private final List<Enchantment> enchantments;
 
@@ -24,19 +24,13 @@ public class PluginHook {
 
     /**
      * Checks if an enchantment is registered in this hook.
-     * @param enchantmentName Enchant display name or key to get
+     * @param key enchantment key
      * @return true if the enchant is registered in this hook
      */
-    public boolean hasEnchantment(String enchantmentName) {
-        return this.enchantments.stream().anyMatch(e -> Objects.equals(e.getKey(), enchantmentName) || Objects.equals(e.getName(), enchantmentName));
+    public boolean hasEnchantment(String key) {
+        return this.enchantments.stream().anyMatch(e -> Objects.equals(e.getKey(), key));
     }
 
-    /**
-     * Gets an enchantment
-     * @param enchantmentName Enchant display name or key to get
-     * @return Enchantment
-     */
-    public Enchantment getEnchantmentByName(String enchantmentName) {
-        return this.getEnchantments().stream().filter(e -> Objects.equals(e.getKey(), enchantmentName) || Objects.equals(e.getName(), enchantmentName)).findFirst().orElseThrow(NoSuchElementException::new);
-    }
+    @Override
+    public abstract Enchantment getEnchantment(final String nameOrKey);
 }
