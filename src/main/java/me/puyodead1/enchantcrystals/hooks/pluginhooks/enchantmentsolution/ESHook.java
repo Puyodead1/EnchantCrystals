@@ -2,7 +2,6 @@ package me.puyodead1.enchantcrystals.hooks.pluginhooks.enchantmentsolution;
 
 import me.puyodead1.enchantcrystals.hooks.Enchantment;
 import me.puyodead1.enchantcrystals.hooks.PluginHook;
-import org.ctp.enchantmentsolution.enchantments.CustomEnchantment;
 import org.ctp.enchantmentsolution.enchantments.RegisterEnchantments;
 
 public class ESHook extends PluginHook {
@@ -13,9 +12,7 @@ public class ESHook extends PluginHook {
 
     @Override
     public void loadEnchantments() {
-        for(final CustomEnchantment ce : RegisterEnchantments.getEnchantments()) {
-            getEnchantments().add(new ESEnchantment(ce));
-        }
+        RegisterEnchantments.getEnchantments().forEach(p -> addEnchantment(new ESEnchantment(p)));
     }
 
     @Override

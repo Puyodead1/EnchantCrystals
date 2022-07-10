@@ -2,7 +2,6 @@ package me.puyodead1.enchantcrystals.hooks.pluginhooks.advancedenchantments;
 
 import me.puyodead1.enchantcrystals.hooks.PluginHook;
 import net.advancedplugins.ae.api.AEAPI;
-import net.advancedplugins.ae.enchanthandler.enchantments.AdvancedEnchantment;
 
 import java.util.Objects;
 
@@ -13,13 +12,12 @@ public class AEHook extends PluginHook {
 
     @Override
     public void loadEnchantments() {
-        for (String e : AEAPI.getAllEnchantments()) {
-            getEnchantments().add(new AEEnchantment(AEAPI.getEnchantmentInstance(e)));
-        }
+        AEAPI.getAllEnchantments().forEach(p -> addEnchantment(new AEEnchantment(AEAPI.getEnchantmentInstance(p))));
     }
 
     /**
      * Gets an enchantment by its key
+     *
      * @param name enchantment name
      * @return Enchantment
      */

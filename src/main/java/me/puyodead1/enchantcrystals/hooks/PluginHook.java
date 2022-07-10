@@ -2,7 +2,6 @@ package me.puyodead1.enchantcrystals.hooks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public abstract class PluginHook implements IPluginHook {
@@ -22,8 +21,13 @@ public abstract class PluginHook implements IPluginHook {
         return enchantments;
     }
 
+    public void addEnchantment(final Enchantment e) {
+        this.enchantments.add(e);
+    }
+
     /**
      * Checks if an enchantment is registered in this hook.
+     *
      * @param key enchantment key
      * @return true if the enchant is registered in this hook
      */

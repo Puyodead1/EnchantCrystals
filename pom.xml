@@ -58,7 +58,7 @@
                         <configuration>
                             <target>
                                 <copy file="target/${project.name}-${project.version}.jar"
-                                      toFile="C:\Users\Puyodead1\Desktop\TestServer\1.19\plugins\${project.name}-${project.version}.jar"/>
+                                      toFile="C:\Users\23562\Desktop\TestServer\1.19\plugins\${project.name}-${project.version}.jar"/>
                             </target>
                         </configuration>
                         <goals>
@@ -99,7 +99,7 @@
             <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-<!--        Hooks-->
+        <!--        Hooks-->
         <dependency>
             <groupId>net.advancedplugins</groupId>
             <artifactId>ae</artifactId>
@@ -121,12 +121,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/CrashAPI.jar</systemPath>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>de.tr7zw</groupId>-->
-<!--            <artifactId>item-nbt-api</artifactId>-->
-<!--            <version>2.10.0</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>de.tr7zw</groupId>-->
+        <!--            <artifactId>item-nbt-api</artifactId>-->
+        <!--            <version>2.10.0</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>

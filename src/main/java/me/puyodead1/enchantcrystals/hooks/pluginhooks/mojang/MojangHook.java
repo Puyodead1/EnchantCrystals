@@ -1,8 +1,8 @@
 package me.puyodead1.enchantcrystals.hooks.pluginhooks.mojang;
 
 import me.puyodead1.enchantcrystals.hooks.PluginHook;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentWrapper;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,15 +15,13 @@ public class MojangHook extends PluginHook {
 
     @Override
     public void loadEnchantments() {
-        System.out.println( EnchantmentWrapper.values().length);
-        for(final Enchantment enchantment : EnchantmentWrapper.values()) {
-            getEnchantments().add(new MojangEnchantment(enchantment));
-        }
+        Arrays.stream(Enchantment.values()).filter(p -> p.getKey().getNamespace().equals(NamespacedKey.MINECRAFT)).forEach(p -> addEnchantment(new MojangEnchantment(p)));
     }
 
 
     /**
      * Gets an enchantment by its key
+     *
      * @param key enchantment key
      * @return Enchantment
      */
