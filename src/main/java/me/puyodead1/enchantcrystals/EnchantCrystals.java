@@ -137,11 +137,16 @@ public final class EnchantCrystals extends JavaPlugin {
     /**
      * Finds plugin hook with registered enchantment name
      *
-     * @param key name of the enchantment
+     * @param name name of the enchantment
      * @return PluginHook that registered the enchantment
      */
-    public static PluginHook getHookForEnchantment(String key) {
-        return EnchantCrystals.hooks.values().stream().filter(h -> h.hasEnchantment(key)).findFirst().get();
+    public static PluginHook getHookForEnchantmentName(final String name) {
+        return EnchantCrystals.hooks.values().stream().filter(h -> h.hasEnchantment(name)).findFirst().get();
+    }
+
+    public static PluginHook getHookForEnchantment(final String key) {
+        final String namespace = key.split(":")[0];
+        return EnchantCrystals.hooks.values().stream().filter(h -> Objects.equals(h.getNamespace(), namespace)).findFirst().get();
     }
 
     /**
@@ -150,14 +155,21 @@ public final class EnchantCrystals extends JavaPlugin {
      * @param key enchantment key
      * @return Enchantment
      */
-    public static Enchantment getEnchantment(String key) {
+    public static Enchantment getEnchantment(final String key) {
         final PluginHook pluginHook = EnchantCrystals.getHookForEnchantment(key);
+        System.out.println(pluginHook.getName());
         return pluginHook.getEnchantment(key);
     }
 
     public static List<String> getEnchantmentKeys() {
         List<String> enchantments = new ArrayList<>();
         EnchantCrystals.hooks.values().forEach(h -> h.getEnchantments().forEach(e -> enchantments.add(e.getKey())));
+        return enchantments;
+    }
+
+    public static List<String> getEnchantmentNames() {
+        List<String> enchantments = new ArrayList<>();
+        EnchantCrystals.hooks.values().forEach(h -> h.getEnchantments().forEach(e -> enchantments.add(e.getName())));
         return enchantments;
     }
 

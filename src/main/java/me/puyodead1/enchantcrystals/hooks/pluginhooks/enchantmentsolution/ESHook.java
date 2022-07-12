@@ -4,10 +4,12 @@ import me.puyodead1.enchantcrystals.hooks.Enchantment;
 import me.puyodead1.enchantcrystals.hooks.PluginHook;
 import org.ctp.enchantmentsolution.enchantments.RegisterEnchantments;
 
+import java.util.Objects;
+
 public class ESHook extends PluginHook {
 
     public ESHook() {
-        super("EnchantSolution");
+        super("es", "EnchantSolution");
     }
 
     @Override
@@ -16,7 +18,7 @@ public class ESHook extends PluginHook {
     }
 
     @Override
-    public Enchantment getEnchantment(String nameOrKey) {
-        return null;
+    public Enchantment getEnchantment(String key) {
+        return this.getEnchantments().stream().filter(p -> Objects.equals(p.getKey(), key)).findFirst().get();
     }
 }

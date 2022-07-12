@@ -10,7 +10,7 @@ import java.util.Objects;
 public class MojangHook extends PluginHook {
 
     public MojangHook() {
-        super("Mojang");
+        super(NamespacedKey.MINECRAFT, "Mojang");
     }
 
     @Override

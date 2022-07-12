@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class PluginHook implements IPluginHook {
+    private final String namespace;
     private final String name;
     private final List<Enchantment> enchantments;
 
-    public PluginHook(final String name) {
+    public PluginHook(final String namespace, final String name) {
+        this.namespace = namespace;
         this.name = name;
         this.enchantments = new ArrayList<>();
     }
@@ -19,6 +21,10 @@ public abstract class PluginHook implements IPluginHook {
 
     public List<Enchantment> getEnchantments() {
         return enchantments;
+    }
+
+    public String getNamespace() {
+        return namespace;
     }
 
     public void addEnchantment(final Enchantment e) {

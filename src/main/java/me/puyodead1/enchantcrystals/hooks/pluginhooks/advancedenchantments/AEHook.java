@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class AEHook extends PluginHook {
     public AEHook() {
-        super("AdvancedEnchantments");
+        super("ae", "AdvancedEnchantments");
     }
 
     @Override

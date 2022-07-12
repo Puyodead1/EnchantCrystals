@@ -1,9 +1,6 @@
 package me.puyodead1.enchantcrystals.hooks;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Set;
 
 public abstract class Enchantment implements IEnchantment {
     private final String key;
