@@ -5,6 +5,7 @@ api-version: 1.19
 softdepend: [ AdvancedEnchantments, EnchantmentSolution ]
 authors: [ Puyodead1 ]
 commands:
-  test:
-    description: test
-    usage: /test
+  enchantcrystals:
+    description: Give a crystal
+    aliases: [ ecr ]
+    usage: /ecr <enchants|give|add> <enchant name> [level] [amount] [player]

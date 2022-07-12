@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -64,7 +63,7 @@ public class EnchantCrystal {
         itemStack.setItemMeta(itemMeta);
 
         // add enchants
-        for(final Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+        for (final Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
             System.out.println(entry.getKey().getKey());
             // apply an enchantment to the ItemStack, use unsafe only for the crystal item
             itemStack = entry.getKey().applyUnsafe(itemStack, entry.getValue());

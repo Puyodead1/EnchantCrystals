@@ -1,6 +1,7 @@
 package me.puyodead1.enchantcrystals;
 
-import me.puyodead1.enchantcrystals.commands.TestCommand;
+import me.puyodead1.enchantcrystals.commands.EnchantCrystalsCommand;
+import me.puyodead1.enchantcrystals.commands.TabCompleter;
 import me.puyodead1.enchantcrystals.hooks.Enchantment;
 import me.puyodead1.enchantcrystals.hooks.PluginHook;
 import me.puyodead1.enchantcrystals.hooks.pluginhooks.EPluginHooks;
@@ -11,7 +12,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import static me.puyodead1.enchantcrystals.Utils.sendConsole;
 
@@ -45,7 +49,7 @@ public final class EnchantCrystals extends JavaPlugin {
     @Override
     public void onDisable() {
         // loop the loaded hooks and clear the enchantments
-        for(final PluginHook hook : EnchantCrystals.hooks.values()) {
+        for (final PluginHook hook : EnchantCrystals.hooks.values()) {
             getLogger().info(String.format("Unloading hook: %s", hook.getName()));
             hook.getEnchantments().clear();
         }
@@ -75,12 +79,10 @@ public final class EnchantCrystals extends JavaPlugin {
 
     public void initCommands() {
         final long STARTED = System.currentTimeMillis();
-//        final PluginCommand enchantcrystals = getCommand("enchantcrystals");
-        final PluginCommand test = getCommand("test");
-        test.setExecutor(new TestCommand());
+        final PluginCommand enchantcrystals = getCommand("enchantcrystals");
 //
-//        enchantcrystals.setExecutor(new EnchantCrystalsCommand());
-//        enchantcrystals.setTabCompleter(new TabCompletion());
+        enchantcrystals.setExecutor(new EnchantCrystalsCommand());
+        enchantcrystals.setTabCompleter(new TabCompleter());
 
         sendConsole(PREFIX + String.format("&bLoaded Commands &e(took %sms)", (System.currentTimeMillis() - STARTED)));
     }
@@ -103,11 +105,12 @@ public final class EnchantCrystals extends JavaPlugin {
 
     /**
      * Checks if a plugin is loaded before trying to load the hook
+     *
      * @param pluginName the plugin to check for
-     * @param clazz the class to load
+     * @param clazz      the class to load
      */
-    public <T extends PluginHook> void tryLoadHook(final String pluginName, final Class<T> clazz)  {
-        if(!pluginName.isEmpty() && !Objects.isNull(Bukkit.getPluginManager().getPlugin(pluginName))) {
+    public <T extends PluginHook> void tryLoadHook(final String pluginName, final Class<T> clazz) {
+        if (!pluginName.isEmpty() && !Objects.isNull(Bukkit.getPluginManager().getPlugin(pluginName))) {
             sendConsole(PREFIX + String.format("&bHooking plugin &e%s", pluginName));
             loadHook(clazz);
         }
@@ -115,9 +118,10 @@ public final class EnchantCrystals extends JavaPlugin {
 
     /**
      * Loads a hook class
+     *
      * @param clazz the class to load
      */
-    public <T extends PluginHook> void loadHook(final Class<T> clazz)  {
+    public <T extends PluginHook> void loadHook(final Class<T> clazz) {
         try {
             final T hook = clazz.getDeclaredConstructor().newInstance();
             sendConsole(PREFIX + String.format("&bLoading Hook: &e%s", hook.getName()));
@@ -132,6 +136,7 @@ public final class EnchantCrystals extends JavaPlugin {
 
     /**
      * Finds plugin hook with registered enchantment name
+     *
      * @param key name of the enchantment
      * @return PluginHook that registered the enchantment
      */
@@ -141,12 +146,19 @@ public final class EnchantCrystals extends JavaPlugin {
 
     /**
      * Gets an enchantment by its key
+     *
      * @param key enchantment key
      * @return Enchantment
      */
     public static Enchantment getEnchantment(String key) {
         final PluginHook pluginHook = EnchantCrystals.getHookForEnchantment(key);
         return pluginHook.getEnchantment(key);
+    }
+
+    public static List<String> getEnchantmentKeys() {
+        List<String> enchantments = new ArrayList<>();
+        EnchantCrystals.hooks.values().forEach(h -> h.getEnchantments().forEach(e -> enchantments.add(e.getKey())));
+        return enchantments;
     }
 
     public static EnchantCrystals getPlugin() {
